@@ -10,7 +10,7 @@ public class ASM : MonoBehaviour {
     public GameObject pointPrefab;
 
     Camera mainCam;
-    public Vector3 cameraFocus = new Vector3(2,2,2);
+    public Vector3 cameraFocus = new Vector3(1.5f,1.5f,1.5f);
     private float cameraXangle;
     private float cameraYangle;
 
@@ -24,6 +24,39 @@ public class ASM : MonoBehaviour {
     void Start () {
         mainCam = Camera.main;
 
+        createPoint(4,3,1);
+        createPoint(4,2,2);
+        createPoint(4,1,3);
+        createPoint(4,1,4);
+        createPoint(3,1,4);
+        createPoint(2,2,4);
+        createPoint(1,3,4);
+        createPoint(2,3,4);
+        createPoint(3,2,4);
+        createPoint(4,2,4);
+        createPoint(4,2,3);
+        createPoint(3,2,3);
+        createPoint(2,3,3);
+        createPoint(3,3,3);
+        createPoint(3,3,4);
+        createPoint(4,3,4);
+        createPoint(4,3,3);
+        createPoint(4,3,2);
+        createPoint(3,3,2);
+        createPoint(2,4,2);
+        createPoint(2,4,3);
+        createPoint(1,4,3);
+        createPoint(1,4,4);
+        createPoint(2,4,4);
+        createPoint(3,4,4);
+        createPoint(3,4,3);
+        createPoint(4,4,3);
+        createPoint(4,4,2);
+        createPoint(3,4,2);
+        createPoint(3,4,1);
+        createPoint(4,1,1);
+        
+
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
@@ -32,11 +65,21 @@ public class ASM : MonoBehaviour {
                 {
                     var go = Instantiate(pointPrefab);
                     go.transform.position = new Vector3(i,j,k);
+		    go.transform.localScale *= 0.2f;
+                    go.transform.GetComponent<Renderer>().material.color = Color.black;
                 }
             }
         }
 	}
 	
+        void createPoint(float x, float y, float z) {
+
+           var go = Instantiate(pointPrefab);
+           go.transform.position = new Vector3(x-1,y-1,z-1);
+           go.transform.GetComponent<Renderer>().material.color = Color.black;
+
+	}
+
 	// Update is called once per frame
 	void Update () {
 
@@ -75,7 +118,7 @@ public class ASM : MonoBehaviour {
                     if (oneSelected)
                     {
                         Debug.Log("created line");
-                        AddLine(selectedPoint.transform.position, rh.transform.position);
+                        AddLine(selectedPoint.transform.position, rh.transform.position, 0.2f);
                         selectedPoint.GetComponent<Renderer>().material.color = Color.white;
                         rh.transform.GetComponent<Renderer>().material.color = Color.white;
                         oneSelected = false;
@@ -113,11 +156,11 @@ public class ASM : MonoBehaviour {
         }
     }
 
-    public void AddLine(Vector3 p1, Vector3 p2)
+    public void AddLine(Vector3 p1, Vector3 p2, float lw)
     {
         var go = Instantiate(linePrefab);
         go.transform.position = p1;
-        go.transform.localScale = new Vector3(go.transform.localScale.x, go.transform.localScale.y, Vector3.Distance(p1,p2));
+        go.transform.localScale = new Vector3(go.transform.localScale.x * lw, go.transform.localScale.y * lw, Vector3.Distance(p1,p2));
         go.transform.LookAt(p2);
     }
 
