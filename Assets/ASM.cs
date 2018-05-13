@@ -18,6 +18,7 @@ public class ASM : MonoBehaviour {
     GameObject selectedPoint;
     private Vector3 mouseOldPos;
     private Vector3 mouseMoveDelta;
+    private float camDistance = 7;
 
     // Use this for initialization
     void Start () {
@@ -47,8 +48,18 @@ public class ASM : MonoBehaviour {
             cameraXangle += (float)mouseMoveDelta.x * 0.001f;
             //cameraYangle += mouseMoveDelta.y;
         }
+        var d = Input.GetAxis("Mouse ScrollWheel");
+        if (d > 0f)
+        {
+            camDistance -= 0.5f;
+        }
+        else if (d < 0f)
+        {
+            camDistance += 0.5f;
+        }
 
-        mainCam.transform.position = cameraFocus + new Vector3(Mathf.Sin(cameraXangle), 0, Mathf.Cos(cameraXangle)) * 7;
+
+        mainCam.transform.position = cameraFocus + new Vector3(Mathf.Sin(cameraXangle), 0, Mathf.Cos(cameraXangle)) * (camDistance);
         mainCam.transform.LookAt(cameraFocus);
 
         if (Input.GetMouseButtonDown(0))
@@ -91,7 +102,10 @@ public class ASM : MonoBehaviour {
 
         if (Physics.Raycast(r, out rh))
         {
-            //Debug.Log("Hit something!");
+            if (rh.collider.gameObject.tag == "Point")
+            {
+                //rh.transform.GetComponent<Renderer>().material.color = Color.green;
+            }
         }
         else
         {
@@ -103,6 +117,7 @@ public class ASM : MonoBehaviour {
     {
         var go = Instantiate(linePrefab);
         go.transform.position = p1;
+        go.transform.localScale = new Vector3(go.transform.localScale.x, go.transform.localScale.y, Vector3.Distance(p1,p2));
         go.transform.LookAt(p2);
     }
 
