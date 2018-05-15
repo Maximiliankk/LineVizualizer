@@ -3,14 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ASM : MonoBehaviour {
+public class ASM : MonoBehaviour
+{
 
-    List<GameObject> VertList;
+    List<GameObject> PointList = new List<GameObject>();
     public GameObject linePrefab;
     public GameObject pointPrefab;
 
     Camera mainCam;
-    public Vector3 cameraFocus = new Vector3(1.5f,1.5f,1.5f);
+    public Vector3 cameraFocus = new Vector3(1.5f, 1.5f, 1.5f);
+    public const float defaultLineWidth = 0.2f;
     private float cameraXangle;
     private float cameraYangle;
 
@@ -21,41 +23,42 @@ public class ASM : MonoBehaviour {
     private float camDistance = 7;
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         mainCam = Camera.main;
 
-        createPoint(4,3,1);
-        createPoint(4,2,2);
-        createPoint(4,1,3);
-        createPoint(4,1,4);
-        createPoint(3,1,4);
-        createPoint(2,2,4);
-        createPoint(1,3,4);
-        createPoint(2,3,4);
-        createPoint(3,2,4);
-        createPoint(4,2,4);
-        createPoint(4,2,3);
-        createPoint(3,2,3);
-        createPoint(2,3,3);
-        createPoint(3,3,3);
-        createPoint(3,3,4);
-        createPoint(4,3,4);
-        createPoint(4,3,3);
-        createPoint(4,3,2);
-        createPoint(3,3,2);
-        createPoint(2,4,2);
-        createPoint(2,4,3);
-        createPoint(1,4,3);
-        createPoint(1,4,4);
-        createPoint(2,4,4);
-        createPoint(3,4,4);
-        createPoint(3,4,3);
-        createPoint(4,4,3);
-        createPoint(4,4,2);
-        createPoint(3,4,2);
-        createPoint(3,4,1);
-        createPoint(4,1,1);
-        
+        createPoint(4, 3, 1, false);
+        createPoint(4, 2, 2);
+        createPoint(4, 1, 3);
+        createPoint(4, 1, 4);
+        createPoint(3, 1, 4);
+        createPoint(2, 2, 4);
+        createPoint(1, 3, 4);
+        createPoint(2, 3, 4);
+        createPoint(3, 2, 4);
+        createPoint(4, 2, 4);
+        createPoint(4, 2, 3);
+        createPoint(3, 2, 3);
+        createPoint(2, 3, 3);
+        createPoint(3, 3, 3);
+        createPoint(3, 3, 4);
+        createPoint(4, 3, 4);
+        createPoint(4, 3, 3);
+        createPoint(4, 3, 2);
+        createPoint(3, 3, 2);
+        createPoint(2, 4, 2);
+        createPoint(2, 4, 3);
+        createPoint(1, 4, 3);
+        createPoint(1, 4, 4);
+        createPoint(2, 4, 4);
+        createPoint(3, 4, 4);
+        createPoint(3, 4, 3);
+        createPoint(4, 4, 3);
+        createPoint(4, 4, 2);
+        createPoint(3, 4, 2);
+        createPoint(3, 4, 1);
+        createPoint(4, 1, 1);
+
 
         for (int i = 0; i < 4; i++)
         {
@@ -64,25 +67,29 @@ public class ASM : MonoBehaviour {
                 for (int k = 0; k < 4; k++)
                 {
                     var go = Instantiate(pointPrefab);
-                    go.transform.position = new Vector3(i,j,k);
-		    go.transform.localScale *= 0.2f;
+                    go.transform.position = new Vector3(i, j, k);
+                    go.transform.localScale *= 0.2f;
                     go.transform.GetComponent<Renderer>().material.color = Color.black;
                 }
             }
         }
-	}
-	
-        void createPoint(float x, float y, float z) {
+    }
 
-           var go = Instantiate(pointPrefab);
-           go.transform.position = new Vector3(x-1,y-1,z-1);
-           go.transform.GetComponent<Renderer>().material.color = Color.black;
+    void createPoint(float x, float y, float z, bool makeLine = true)
+    {
+        GameObject go = Instantiate(pointPrefab);
+        go.transform.position = new Vector3(x - 1, y - 1, z - 1);
+        go.transform.GetComponent<Renderer>().material.color = Color.black;
+        if(makeLine)
+        {
+            AddLine(go.transform.position,PointList[PointList.Count-1].transform.position);
+        }
+        PointList.Add(go);
+    }
 
-	}
-
-	// Update is called once per frame
-	void Update () {
-
+    // Update is called once per frame
+    void Update()
+    {
         mouseMoveDelta = Input.mousePosition - mouseOldPos;
         mouseOldPos = Input.mousePosition;
 
@@ -101,8 +108,7 @@ public class ASM : MonoBehaviour {
             camDistance += 0.5f;
         }
 
-
-        mainCam.transform.position = cameraFocus + new Vector3(Mathf.Sin(cameraXangle), 0, Mathf.Cos(cameraXangle)) * (camDistance);
+        mainCam.transform.position = cameraFocus + (new Vector3(Mathf.Sin(cameraXangle), 0, Mathf.Cos(cameraXangle))) * (camDistance);
         mainCam.transform.LookAt(cameraFocus);
 
         if (Input.GetMouseButtonDown(0))
@@ -110,15 +116,15 @@ public class ASM : MonoBehaviour {
             Ray r = mainCam.ScreenPointToRay(Input.mousePosition);
             RaycastHit rh;
 
-            if(Physics.Raycast(r, out rh))
+            if (Physics.Raycast(r, out rh))
             {
-                if(rh.collider.gameObject.tag == "Point")
+                if (rh.collider.gameObject.tag == "Point")
                 {
                     Debug.Log("Clicked point!");
                     if (oneSelected)
                     {
                         Debug.Log("created line");
-                        AddLine(selectedPoint.transform.position, rh.transform.position, 0.2f);
+                        AddLine(selectedPoint.transform.position, rh.transform.position);
                         selectedPoint.GetComponent<Renderer>().material.color = Color.white;
                         rh.transform.GetComponent<Renderer>().material.color = Color.white;
                         oneSelected = false;
@@ -134,7 +140,7 @@ public class ASM : MonoBehaviour {
             }
         }
         MouseRayCast();
-	}
+    }
 
     private void MouseRayCast()
     {
@@ -156,11 +162,11 @@ public class ASM : MonoBehaviour {
         }
     }
 
-    public void AddLine(Vector3 p1, Vector3 p2, float lw)
+    public void AddLine(Vector3 p1, Vector3 p2, float linewidth = defaultLineWidth)
     {
         var go = Instantiate(linePrefab);
         go.transform.position = p1;
-        go.transform.localScale = new Vector3(go.transform.localScale.x * lw, go.transform.localScale.y * lw, Vector3.Distance(p1,p2));
+        go.transform.localScale = new Vector3(go.transform.localScale.x * linewidth, go.transform.localScale.y * linewidth, Vector3.Distance(p1, p2));
         go.transform.LookAt(p2);
     }
 
