@@ -22,6 +22,9 @@ public class ASM : MonoBehaviour
     private Vector3 mouseMoveDelta;
     private float camDistance = 7;
 
+    public Vector3 p1;
+    public Vector3 p2;
+
     // Use this for initialization
     void Start()
     {
@@ -59,6 +62,9 @@ public class ASM : MonoBehaviour
         createPoint(3, 4, 1);
         createPoint(4, 1, 1);
 
+	p1 = new Vector3(1,1,1);
+	p2 = new Vector3(1,1,2);
+	AddLine(p1, p2, 0.2f);
 
         for (int i = 0; i < 4; i++)
         {
