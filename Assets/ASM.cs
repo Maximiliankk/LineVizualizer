@@ -22,9 +22,6 @@ public class ASM : MonoBehaviour
     private Vector3 mouseMoveDelta;
     private float camDistance = 7;
 
-    public Vector3 p1;
-    public Vector3 p2;
-
     // Use this for initialization
     void Start()
     {
@@ -60,11 +57,66 @@ public class ASM : MonoBehaviour
         createPoint(4, 4, 2);
         createPoint(3, 4, 2);
         createPoint(3, 4, 1);
-        createPoint(4, 1, 1);
+        createPoint(4, 4, 1);
 
-	p1 = new Vector3(1,1,1);
-	p2 = new Vector3(1,1,2);
-	AddLine(p1, p2, 0.2f);
+	// grid points
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                for (int k = 0; k < 4; k++)
+                {
+                    var go = Instantiate(pointPrefab);
+                    go.transform.position = new Vector3(i, j, k);
+                    go.transform.localScale *= 0.2f;
+                    go.transform.GetComponent<Renderer>().material.color = Color.black;
+                }
+            }
+        }
+	// grid lines 
+
+     	    var P0 = new Vector3(0,0,0);
+	    var P1 = new Vector3(0,0,0);
+
+        for (int j = 0; j < 4; j++)
+	{
+          	    P0 = new Vector3(0,j,0);
+          	    P1 = new Vector3(3,j,0);
+          	    AddLine(P0, P1, 0.05f);
+          	    P0.z += 1; P1.z += 1;
+          	    AddLine(P0, P1, 0.05f);
+          	    P0.z += 1; P1.z += 1;
+          	    AddLine(P0, P1, 0.05f);
+          	    P0.z += 1; P1.z += 1;
+          	    AddLine(P0, P1, 0.05f);
+	}
+        for (int j = 0; j < 4; j++)
+	{
+          	    P0 = new Vector3(0,j,0);
+          	    P1 = new Vector3(0,j,3);
+          	    AddLine(P0, P1, 0.05f);
+          	    P0.x += 1; P1.x += 1;
+          	    AddLine(P0, P1, 0.05f);
+          	    P0.x += 1; P1.x += 1;
+          	    AddLine(P0, P1, 0.05f);
+          	    P0.x += 1; P1.x += 1;
+          	    AddLine(P0, P1, 0.05f);
+	}
+
+        for (int j = 0; j < 4; j++)
+	{
+          	    P0 = new Vector3(0,0,j);
+          	    P1 = new Vector3(0,3,j);
+          	    AddLine(P0, P1, 0.05f);
+          	    P0.x += 1; P1.x += 1;
+          	    AddLine(P0, P1, 0.05f);
+          	    P0.x += 1; P1.x += 1;
+          	    AddLine(P0, P1, 0.05f);
+          	    P0.x += 1; P1.x += 1;
+          	    AddLine(P0, P1, 0.05f);
+	}
+
+
 
         for (int i = 0; i < 4; i++)
         {
@@ -180,9 +232,9 @@ public class ASM : MonoBehaviour
     {
         for (int i = 0; i < PointList.Count; i++)
         {
-            var pointCoords = PointList[i].transform.position;
-            var screenPoint = mainCam.WorldToScreenPoint(pointCoords);
-            if (GUI.Button(new Rect(screenPoint.x, screenPoint.y, 50, 20), "" + pointCoords.x + ", " + pointCoords.y + ", " + pointCoords.z))
+//            var pointCoords = PointList[i].transform.position;
+//            var screenPoint = mainCam.WorldToScreenPoint(pointCoords);
+//            if (GUI.Button(new Rect(screenPoint.x, screenPoint.y, 50, 20), "" + pointCoords.x + ", " + pointCoords.y + ", " + pointCoords.z))
             {
 
             }
