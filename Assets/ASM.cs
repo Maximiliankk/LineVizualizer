@@ -178,9 +178,14 @@ public class ASM : MonoBehaviour
 
     private void OnGUI()
     {
-        if (GUI.Button(new Rect(10, 70, 50, 30), "Save"))
+        for (int i = 0; i < PointList.Count; i++)
         {
+            var pointCoords = PointList[i].transform.position;
+            var screenPoint = mainCam.WorldToScreenPoint(pointCoords);
+            if (GUI.Button(new Rect(screenPoint.x, screenPoint.y, 50, 20), "" + pointCoords.x + ", " + pointCoords.y + ", " + pointCoords.z))
+            {
 
+            }
         }
     }
 }
