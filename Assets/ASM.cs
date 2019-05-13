@@ -44,7 +44,7 @@ public class ASM : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        pointLabelStyle.normal.textColor = Color.yellow;
+        pointLabelStyle.normal.textColor = Color.red;
         menuLabelStyle.normal.textColor = Color.black;
 
         mainCam = Camera.main;
@@ -275,8 +275,6 @@ public class ASM : MonoBehaviour
         {
             ToggleControls();
         }
-
-        // if controls should be shown
         if (toggleControls)
         {
             LeftUIypos += 40;
@@ -291,14 +289,17 @@ public class ASM : MonoBehaviour
             LeftUIypos += 20;
             GUI.Label(new Rect(10, LeftUIypos, 230, 20), "Scrollwheel.....zoom in/out", menuLabelStyle);
             LeftUIypos += 20;
-            if (GUI.Button(new Rect(10, LeftUIypos, 230, 20), "Reset camera (LeftShift + R)"))
+            if (GUI.Button(new Rect(10, LeftUIypos, 230, 20), "Reset (LeftShift + R)"))
             {
                 ResetCamera();
             }
-        }
-        // if labels are on
-        if(toggleLabels)
-        {
+            LeftUIypos += 20;
+            if (GUI.Button(new Rect(10, LeftUIypos, 230, 20), "Animate"))
+            {
+                StopAllCoroutines();
+                StartCoroutine(AnimateLine());
+            }
+
             for (int i = 0; i < PointList.Count; i++) // for each point in PointList
             {
                 var pointCoords = PointList[i].transform.position;
@@ -309,7 +310,7 @@ public class ASM : MonoBehaviour
                 GUI.Label(
                     new Rect(screenPoint.x - width / 2,
                     Screen.height - screenPoint.y, width, height),
-                    "" + (pointCoords.x + 1) + ", " + (pointCoords.y + 1) + ", " + (pointCoords.z + 1),
+                    "[" + (pointCoords.x + 1) + ", " + (pointCoords.y + 1) + ", " + (pointCoords.z + 1) + "]",
                     pointLabelStyle);
             }
         }
@@ -319,5 +320,22 @@ public class ASM : MonoBehaviour
     {
         cameraXangle = defaultCameraAngle;
         camDistance = defaultCamDistance;
+        for (int i = 0; i < PointList.Count; i++)
+        {
+            PointList[i].GetComponent<Renderer>().material.color = Color.black;
+        }
+    }
+
+    IEnumerator AnimateLine()
+    {
+        for (int i = 0; i < PointList.Count; i++)
+        {
+            PointList[i].GetComponent<Renderer>().material.color = Color.black;
+        }
+        for (int i = 0; i < PointList.Count; i++)
+        {
+            PointList[i].GetComponent<Renderer>().material.color = Color.yellow;
+            yield return new WaitForSeconds(0.1f);
+        }
     }
 }
