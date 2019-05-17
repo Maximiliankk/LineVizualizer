@@ -33,7 +33,7 @@ public class ASM : MonoBehaviour
     private Vector3 mouseOldPos;
     private Vector3 mouseMoveDelta;
     private bool toggleControls = true;
-    private bool toggleLabels = false;
+    private bool toggleLabels = true;
     public float cameraRotateSpeed = 0.001f;
     public float gridLinesThickness = 0.05f;
     public float cameraZoomSpeed = 0.5f;
@@ -299,7 +299,9 @@ public class ASM : MonoBehaviour
                 StopAllCoroutines();
                 StartCoroutine(AnimateLine());
             }
-
+        }
+        if (toggleLabels)
+        {
             for (int i = 0; i < PointList.Count; i++) // for each point in PointList
             {
                 var pointCoords = PointList[i].transform.position;
