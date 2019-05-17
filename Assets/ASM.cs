@@ -22,10 +22,11 @@ public class ASM : MonoBehaviour
     public Vector3 cameraFocus = new Vector3(1.5f, 1.5f, 1.5f);
 
     const float defaultLineWidth = 0.2f;
-    const float defaultCameraAngle = 0.785f; // PI / 4f
-    public float cameraXangle = defaultCameraAngle;
-    private float cameraYangle;
-    private const float defaultCamDistance = 7;
+    const float defaultCameraAngleX = 45;
+    const float defaultCameraAngleY = 45;
+    public float cameraXangle = defaultCameraAngleX;
+    public float cameraYangle = defaultCameraAngleY;
+    private const float defaultCamDistance = 10;
     private float camDistance = defaultCamDistance;
 
     bool oneSelected = false;
@@ -192,10 +193,10 @@ public class ASM : MonoBehaviour
             ResetCamera(); // reset the camera angle to default
         }
 
-        if (Input.GetMouseButton(1)) // right mouse button held
+        if (Input.GetMouseButton(0)) // left mouse button
         {
-            cameraXangle += (float)mouseMoveDelta.x * cameraRotateSpeed;
-            //cameraYangle += mouseMoveDelta.y;
+            cameraXangle -= mouseMoveDelta.x * cameraRotateSpeed;
+            cameraYangle -= mouseMoveDelta.y * cameraRotateSpeed;
         }
         var d = Input.GetAxis("Mouse ScrollWheel");
         if (d > 0f)
@@ -207,10 +208,12 @@ public class ASM : MonoBehaviour
             camDistance += cameraZoomSpeed;
         }
 
-        mainCam.transform.position = cameraFocus + (new Vector3(Mathf.Sin(cameraXangle), 0, Mathf.Cos(cameraXangle))) * (camDistance);
-        mainCam.transform.LookAt(cameraFocus);
+        // camera rotation
+        mainCam.transform.parent.rotation = Quaternion.identity;
+        mainCam.transform.position = new Vector3(camDistance, 0, 0);
+        mainCam.transform.parent.Rotate(0, -cameraXangle, cameraYangle);
 
-        if (Input.GetMouseButtonDown(0)) // left mouse button pressed
+        if (Input.GetMouseButtonDown(1)) // right mouse button
         {
             Ray r = mainCam.ScreenPointToRay(Input.mousePosition);
             RaycastHit rh;
@@ -238,7 +241,7 @@ public class ASM : MonoBehaviour
                 }
             }
         }
-        DebuggingUpdate();
+        //DebuggingUpdate();
     }
 
     private void DebuggingUpdate()
@@ -283,9 +286,9 @@ public class ASM : MonoBehaviour
                 ToggleLabels();
             }
             LeftUIypos += 20;
-            GUI.Label(new Rect(10, LeftUIypos, 230, 20), "Right mouse drag.....rotate view", menuLabelStyle);
+            GUI.Label(new Rect(10, LeftUIypos, 230, 20), "Left mouse drag.....rotate view", menuLabelStyle);
             LeftUIypos += 20;
-            GUI.Label(new Rect(10, LeftUIypos, 230, 20), "Left mouse click.....connect points", menuLabelStyle);
+            GUI.Label(new Rect(10, LeftUIypos, 230, 20), "Right mouse click.....connect points", menuLabelStyle);
             LeftUIypos += 20;
             GUI.Label(new Rect(10, LeftUIypos, 230, 20), "Scrollwheel.....zoom in/out", menuLabelStyle);
             LeftUIypos += 20;
@@ -320,7 +323,8 @@ public class ASM : MonoBehaviour
 
     private void ResetCamera()
     {
-        cameraXangle = defaultCameraAngle;
+        cameraXangle = defaultCameraAngleX;
+        cameraYangle = defaultCameraAngleY;
         camDistance = defaultCamDistance;
         for (int i = 0; i < PointList.Count; i++)
         {
