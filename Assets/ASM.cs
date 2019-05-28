@@ -50,9 +50,9 @@ public class ASM : MonoBehaviour
 
         mainCam = Camera.main;
 
-        AddLine(new Vector3(0, 0, 0), new Vector3(10, 0, 0), 0.6f, Color.grey);
-        AddLine(new Vector3(0, 0, 0), new Vector3(0, 10, 0), 0.6f, Color.grey);
-        AddLine(new Vector3(0, 0, 0), new Vector3(0, 0, 10), 0.6f, Color.grey);
+        //AddLine(new Vector3(0, 0, 0), new Vector3(10, 0, 0), 0.6f, Color.grey);
+        //AddLine(new Vector3(0, 0, 0), new Vector3(0, 10, 0), 0.6f, Color.grey);
+        //AddLine(new Vector3(0, 0, 0), new Vector3(0, 0, 10), 0.6f, Color.grey);
 
         createPoint(4, 3, 1, false);
         createPoint(4, 2, 2);
