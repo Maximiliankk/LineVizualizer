@@ -15,6 +15,7 @@ using UnityEngine;
 public class ASM : MonoBehaviour
 {
     List<GameObject> PointList = new List<GameObject>();
+    List<GameObject> LineList = new List<GameObject>();
     public GameObject linePrefab;
     public GameObject pointPrefab;
 
@@ -38,6 +39,7 @@ public class ASM : MonoBehaviour
     public float cameraRotateSpeed = 0.001f;
     public float gridLinesThickness = 0.05f;
     public float cameraZoomSpeed = 0.5f;
+    Color currentColor = Color.black;
 
     GUIStyle pointLabelStyle = new GUIStyle();
     GUIStyle menuLabelStyle = new GUIStyle();
@@ -50,41 +52,8 @@ public class ASM : MonoBehaviour
 
         mainCam = Camera.main;
 
-        //AddLine(new Vector3(0, 0, 0), new Vector3(10, 0, 0), 0.6f, Color.grey);
-        //AddLine(new Vector3(0, 0, 0), new Vector3(0, 10, 0), 0.6f, Color.grey);
-        //AddLine(new Vector3(0, 0, 0), new Vector3(0, 0, 10), 0.6f, Color.grey);
-
-        createPoint(4, 3, 1, false);
-        createPoint(4, 2, 2);
-        createPoint(4, 1, 3);
-        createPoint(4, 1, 4);
-        createPoint(3, 1, 4);
-        createPoint(2, 2, 4);
-        createPoint(1, 3, 4);
-        createPoint(2, 3, 4);
-        createPoint(3, 2, 4);
-        createPoint(4, 2, 4);
-        createPoint(4, 2, 3);
-        createPoint(3, 2, 3);
-        createPoint(2, 3, 3);
-        createPoint(3, 3, 3);
-        createPoint(3, 3, 4);
-        createPoint(4, 3, 4);
-        createPoint(4, 3, 3);
-        createPoint(4, 3, 2);
-        createPoint(3, 3, 2);
-        createPoint(2, 4, 2);
-        createPoint(2, 4, 3);
-        createPoint(1, 4, 3);
-        createPoint(1, 4, 4);
-        createPoint(2, 4, 4);
-        createPoint(3, 4, 4);
-        createPoint(3, 4, 3);
-        createPoint(4, 4, 3);
-        createPoint(4, 4, 2);
-        createPoint(3, 4, 2);
-        createPoint(3, 4, 1);
-        createPoint(4, 4, 1);
+        DrawFirstPath();
+        DrawTriadSet();
 
         // grid points
         for (int i = 0; i < 4; i++)
@@ -165,11 +134,82 @@ public class ASM : MonoBehaviour
         GameObject go = Instantiate(pointPrefab);
         go.transform.position = new Vector3(x - 1, y - 1, z - 1);
         go.transform.GetComponent<Renderer>().material.color = Color.black;
+        go.GetComponent<Renderer>().material.color = currentColor;
         if (makeLine)
         {
-            AddLine(go.transform.position, PointList[PointList.Count - 1].transform.position, defaultLineWidth * 2);
+            AddLine(go.transform.position, PointList[PointList.Count - 1].transform.position, defaultLineWidth * 2, currentColor);
         }
         PointList.Add(go);
+    }
+
+    void SetColor(Color c)
+    {
+        currentColor = c;
+    }
+
+    void DrawFirstPath()
+    {
+        SetColor(Color.black); // color of this path
+        createPoint(4, 3, 1, false);
+        createPoint(4, 2, 2);
+        createPoint(4, 1, 3);
+        createPoint(4, 1, 4);
+        createPoint(3, 1, 4);
+        createPoint(2, 2, 4);
+        createPoint(1, 3, 4);
+        createPoint(2, 3, 4);
+        createPoint(3, 2, 4);
+        createPoint(4, 2, 4);
+        createPoint(4, 2, 3);
+        createPoint(3, 2, 3);
+        createPoint(2, 3, 3);
+        createPoint(3, 3, 3);
+        createPoint(3, 3, 4);
+        createPoint(4, 3, 4);
+        createPoint(4, 3, 3);
+        createPoint(4, 3, 2);
+        createPoint(3, 3, 2);
+        createPoint(2, 4, 2);
+        createPoint(2, 4, 3);
+        createPoint(1, 4, 3);
+        createPoint(1, 4, 4);
+        createPoint(2, 4, 4);
+        createPoint(3, 4, 4);
+        createPoint(3, 4, 3);
+        createPoint(4, 4, 3);
+        createPoint(4, 4, 2);
+        createPoint(3, 4, 2);
+        createPoint(3, 4, 1);
+        createPoint(4, 4, 1);
+    }
+
+    void DrawTriadSet()
+    {
+        SetColor(Color.green); // color of this path
+        createPoint(6, 3, 3, false);
+        createPoint(3, 6, 3);
+        createPoint(3, 3, 6);
+        createPoint(4, 4, 4);
+        createPoint(5, 3, 4);
+        createPoint(5, 4, 3);
+        createPoint(4, 5, 3);
+        createPoint(3, 5, 4);
+        createPoint(3, 4, 5);
+        createPoint(4, 3, 5);
+    }
+
+    void ClearPointsAndLines()
+    {
+        foreach (var p in PointList)
+        {
+            Destroy(p);
+        }
+        foreach (var l in LineList)
+        {
+            Destroy(l);
+        }
+        PointList.Clear();
+        LineList.Clear();
     }
 
     // Update is called once per frame
@@ -241,14 +281,8 @@ public class ASM : MonoBehaviour
                 }
             }
         }
-        //DebuggingUpdate();
     }
 
-    private void DebuggingUpdate()
-    {
-        Ray r = mainCam.ScreenPointToRay(Input.mousePosition);
-        Debug.DrawRay(r.origin, r.direction * 100); // debug drawing in Unity Scene Tab for camera look direction
-    }
     // creates a cylinder in the scene connecting p1 to p2
     // of thickness linewidth
     // and color lineColor
@@ -259,6 +293,7 @@ public class ASM : MonoBehaviour
         go.transform.localScale = new Vector3(go.transform.localScale.x * linewidth, go.transform.localScale.y * linewidth, Vector3.Distance(p1, p2));
         go.transform.GetComponentInChildren<Renderer>().material.color = lineColor;
         go.transform.LookAt(p2);
+        LineList.Add(go);
     }
     // toggles the UI control buttons on and off
     private void ToggleControls()
@@ -301,6 +336,24 @@ public class ASM : MonoBehaviour
             {
                 StopAllCoroutines();
                 StartCoroutine(AnimateLine());
+            }
+            LeftUIypos += 20;
+            if (GUI.Button(new Rect(10, LeftUIypos, 230, 20), "Clear Points"))
+            {
+                StopAllCoroutines();
+                ClearPointsAndLines();
+            }
+            LeftUIypos += 20;
+            if (GUI.Button(new Rect(10, LeftUIypos, 230, 20), "Draw First Path"))
+            {
+                StopAllCoroutines();
+                DrawFirstPath();
+            }
+            LeftUIypos += 20;
+            if (GUI.Button(new Rect(10, LeftUIypos, 230, 20), "Draw Triad Set"))
+            {
+                StopAllCoroutines();
+                DrawTriadSet();
             }
         }
         if (toggleLabels)
