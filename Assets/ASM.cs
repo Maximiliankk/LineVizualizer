@@ -52,23 +52,10 @@ public class ASM : MonoBehaviour
 
         mainCam = Camera.main;
 
-        DrawFirstPath();
-        DrawTriadSet();
+//        DrawFirstPath();
+//        DrawTriadSet();
 
         // grid points
-        for (int i = 0; i < 4; i++)
-        {
-            for (int j = 0; j < 4; j++)
-            {
-                for (int k = 0; k < 4; k++)
-                {
-                    var go = Instantiate(pointPrefab);
-                    go.transform.position = new Vector3(i, j, k);
-                    go.transform.localScale *= defaultLineWidth;
-                    go.transform.GetComponent<Renderer>().material.color = Color.black;
-                }
-            }
-        }
 
         // grid lines 
         var P0 = new Vector3(0, 0, 0);
@@ -128,6 +115,25 @@ public class ASM : MonoBehaviour
             }
         }
     }
+    
+
+    void drawGrid(int dim, float scale, Color c) {
+	// scale is multiplier
+        for (int i = 0; i < dim; i++)
+        {
+            for (int j = 0; j < dim; j++)
+            {
+                for (int k = 0; k < dim; k++)
+                {
+                    var go = Instantiate(pointPrefab);
+                    go.transform.position = new Vector3(i, j, k);
+                    go.transform.localScale *= defaultLineWidth * scale;
+                    go.transform.GetComponent<Renderer>().material.color = c;
+                }
+            }
+        }
+    }
+
     // Makes a sphere and a line (by default)
     void createPoint(float x, float y, float z, bool makeLine = true)
     {
@@ -354,6 +360,11 @@ public class ASM : MonoBehaviour
             {
                 StopAllCoroutines();
                 DrawTriadSet();
+            }
+            LeftUIypos += 20;
+            if (GUI.Button(new Rect(10, LeftUIypos, 230, 20), "Draw 6x6 cube"))
+            {
+		 drawGrid(6, 1, Color.black);
             }
         }
         if (toggleLabels)
