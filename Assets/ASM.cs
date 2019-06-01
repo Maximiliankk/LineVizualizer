@@ -321,48 +321,49 @@ public class ASM : MonoBehaviour
         }
         if (toggleControls)
         {
+            int buttonWidths = 150;
             LeftUIypos += 40;
             if (GUI.Button(new Rect(10, LeftUIypos, 130, 20), "Toggle Labels (L)"))
             {
                 ToggleLabels();
             }
             LeftUIypos += 20;
-            GUI.Label(new Rect(10, LeftUIypos, 230, 20), "Left mouse drag.....rotate view", menuLabelStyle);
+            GUI.Label(new Rect(10, LeftUIypos, buttonWidths, 20), "Left mouse drag.....rotate view", menuLabelStyle);
             LeftUIypos += 20;
-            GUI.Label(new Rect(10, LeftUIypos, 230, 20), "Right mouse click.....connect points", menuLabelStyle);
+            GUI.Label(new Rect(10, LeftUIypos, buttonWidths, 20), "Right mouse click.....connect points", menuLabelStyle);
             LeftUIypos += 20;
-            GUI.Label(new Rect(10, LeftUIypos, 230, 20), "Scrollwheel.....zoom in/out", menuLabelStyle);
+            GUI.Label(new Rect(10, LeftUIypos, buttonWidths, 20), "Scrollwheel.....zoom in/out", menuLabelStyle);
             LeftUIypos += 20;
-            if (GUI.Button(new Rect(10, LeftUIypos, 230, 20), "Reset (LeftShift + R)"))
+            if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Reset (LeftShift + R)"))
             {
                 ResetCamera();
             }
             LeftUIypos += 20;
-            if (GUI.Button(new Rect(10, LeftUIypos, 230, 20), "Animate"))
+            if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Animate"))
             {
                 StopAllCoroutines();
                 StartCoroutine(AnimateLine());
             }
             LeftUIypos += 20;
-            if (GUI.Button(new Rect(10, LeftUIypos, 230, 20), "Clear Points"))
+            if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Clear Points"))
             {
                 StopAllCoroutines();
                 ClearPointsAndLines();
             }
             LeftUIypos += 20;
-            if (GUI.Button(new Rect(10, LeftUIypos, 230, 20), "Draw First Path"))
+            if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Draw First Path"))
             {
                 StopAllCoroutines();
                 DrawFirstPath();
             }
             LeftUIypos += 20;
-            if (GUI.Button(new Rect(10, LeftUIypos, 230, 20), "Draw Triad Set"))
+            if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Draw Triad Set"))
             {
                 StopAllCoroutines();
                 DrawTriadSet();
             }
             LeftUIypos += 20;
-            if (GUI.Button(new Rect(10, LeftUIypos, 230, 20), "Draw 6x6 cube"))
+            if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Draw 6x6 cube"))
             {
 		 drawGrid(6, 1, Color.black);
             }
