@@ -14,8 +14,11 @@ using UnityEngine;
 /// </summary>
 public class ASM : MonoBehaviour
 {
-    List<GameObject> PointList = new List<GameObject>();
-    List<GameObject> LineList = new List<GameObject>();
+    List<GameObject> FirstPoints = new List<GameObject>();
+    List<GameObject> FirstLines = new List<GameObject>();
+
+    List<GameObject> HamiltonPoints = new List<GameObject>();
+    List<GameObject> HamiltonLines = new List<GameObject>();
 
     List<GameObject> TriadPoints = new List<GameObject>();
     List<GameObject> TriadLines = new List<GameObject>();
@@ -142,7 +145,7 @@ public class ASM : MonoBehaviour
         pointbuffer.Add(go);
         if (makeLine)
         { 
-            AddLine(go.transform.position, pointbuffer[pointbuffer.Count - 1].transform.position, defaultLineWidth * 2, currentColor, linebuffer);
+            AddLine(go.transform.position, pointbuffer[pointbuffer.Count - 2].transform.position, defaultLineWidth * 2, currentColor, linebuffer);
         }
     }
 
@@ -190,83 +193,83 @@ public class ASM : MonoBehaviour
     void DrawHamiltonCycle()
     {
         SetColor(Color.black); // color of this path
-        createPoint(4, 4, 3, false);
-        createPoint(3, 4, 3);
-        createPoint(3, 4, 2);
-        createPoint(4, 4, 2);
-        createPoint(4, 4, 1);
-        createPoint(3, 4, 1);
-        createPoint(4, 3, 1);
-        createPoint(4, 2, 2);
-        createPoint(4, 1, 3);
-        createPoint(4, 1, 4);
-        createPoint(3, 1, 4);
-        createPoint(2, 2, 4);
-        createPoint(1, 3, 4);
-        createPoint(2, 3, 4);
-        createPoint(2, 3, 3);
-        createPoint(3, 3, 3);
-        createPoint(4, 3, 3);
-        createPoint(4, 3, 4);
-        createPoint(3, 3, 4);
-        createPoint(4, 2, 4);
-        createPoint(3, 2, 4);
-        createPoint(3, 2, 3);
-        createPoint(4, 2, 3);
-        createPoint(4, 3, 2);
-        createPoint(3, 3, 2);
-        createPoint(2, 4, 2);
-        createPoint(2, 4, 3);
-        createPoint(1, 4, 3);
-        createPoint(1, 4, 4);
-        createPoint(2, 4, 4);
-        createPoint(3, 4, 4);
-        createPoint(4, 4, 4);
-        createPoint(4, 5, 3);
-        createPoint(3, 6, 3);
-        createPoint(3, 5, 4);
-        createPoint(3, 4, 5);
-        createPoint(3, 3, 6);
-        createPoint(4, 3, 5);
-        createPoint(5, 3, 4);
-        createPoint(6, 3, 3);
-        createPoint(5, 4, 3);
+        createPoint(4, 4, 3, false, HamiltonPoints, HamiltonLines);
+        createPoint(3, 4, 3, true, HamiltonPoints, HamiltonLines);
+        createPoint(3, 4, 2, true, HamiltonPoints, HamiltonLines);
+        createPoint(4, 4, 2, true, HamiltonPoints, HamiltonLines);
+        createPoint(4, 4, 1, true, HamiltonPoints, HamiltonLines);
+        createPoint(3, 4, 1, true, HamiltonPoints, HamiltonLines);
+        createPoint(4, 3, 1, true, HamiltonPoints, HamiltonLines);
+        createPoint(4, 2, 2, true, HamiltonPoints, HamiltonLines);
+        createPoint(4, 1, 3, true, HamiltonPoints, HamiltonLines);
+        createPoint(4, 1, 4, true, HamiltonPoints, HamiltonLines);
+        createPoint(3, 1, 4, true, HamiltonPoints, HamiltonLines);
+        createPoint(2, 2, 4, true, HamiltonPoints, HamiltonLines);
+        createPoint(1, 3, 4, true, HamiltonPoints, HamiltonLines);
+        createPoint(2, 3, 4, true, HamiltonPoints, HamiltonLines);
+        createPoint(2, 3, 3, true, HamiltonPoints, HamiltonLines);
+        createPoint(3, 3, 3, true, HamiltonPoints, HamiltonLines);
+        createPoint(4, 3, 3, true, HamiltonPoints, HamiltonLines);
+        createPoint(4, 3, 4, true, HamiltonPoints, HamiltonLines);
+        createPoint(3, 3, 4, true, HamiltonPoints, HamiltonLines);
+        createPoint(4, 2, 4, true, HamiltonPoints, HamiltonLines);
+        createPoint(3, 2, 4, true, HamiltonPoints, HamiltonLines);
+        createPoint(3, 2, 3, true, HamiltonPoints, HamiltonLines);
+        createPoint(4, 2, 3, true, HamiltonPoints, HamiltonLines);
+        createPoint(4, 3, 2, true, HamiltonPoints, HamiltonLines);
+        createPoint(3, 3, 2, true, HamiltonPoints, HamiltonLines);
+        createPoint(2, 4, 2, true, HamiltonPoints, HamiltonLines);
+        createPoint(2, 4, 3, true, HamiltonPoints, HamiltonLines);
+        createPoint(1, 4, 3, true, HamiltonPoints, HamiltonLines);
+        createPoint(1, 4, 4, true, HamiltonPoints, HamiltonLines);
+        createPoint(2, 4, 4, true, HamiltonPoints, HamiltonLines);
+        createPoint(3, 4, 4, true, HamiltonPoints, HamiltonLines);
+        createPoint(4, 4, 4, true, HamiltonPoints, HamiltonLines);
+        createPoint(4, 5, 3, true, HamiltonPoints, HamiltonLines);
+        createPoint(3, 6, 3, true, HamiltonPoints, HamiltonLines);
+        createPoint(3, 5, 4, true, HamiltonPoints, HamiltonLines);
+        createPoint(3, 4, 5, true, HamiltonPoints, HamiltonLines);
+        createPoint(3, 3, 6, true, HamiltonPoints, HamiltonLines);
+        createPoint(4, 3, 5, true, HamiltonPoints, HamiltonLines);
+        createPoint(5, 3, 4, true, HamiltonPoints, HamiltonLines);
+        createPoint(6, 3, 3, true, HamiltonPoints, HamiltonLines);
+        createPoint(5, 4, 3, true, HamiltonPoints, HamiltonLines);
     }
 
     void DrawFirstPath()
     {
         SetColor(Color.black); // color of this path
-        createPoint(4, 3, 1, false);
-        createPoint(4, 2, 2);
-        createPoint(4, 1, 3);
-        createPoint(4, 1, 4);
-        createPoint(3, 1, 4);
-        createPoint(2, 2, 4);
-        createPoint(1, 3, 4);
-        createPoint(2, 3, 4);
-        createPoint(3, 2, 4);
-        createPoint(4, 2, 4);
-        createPoint(4, 2, 3);
-        createPoint(3, 2, 3);
-        createPoint(2, 3, 3);
-        createPoint(3, 3, 3);
-        createPoint(3, 3, 4);
-        createPoint(4, 3, 4);
-        createPoint(4, 3, 3);
-        createPoint(4, 3, 2);
-        createPoint(3, 3, 2);
-        createPoint(2, 4, 2);
-        createPoint(2, 4, 3);
-        createPoint(1, 4, 3);
-        createPoint(1, 4, 4);
-        createPoint(2, 4, 4);
-        createPoint(3, 4, 4);
-        createPoint(3, 4, 3);
-        createPoint(4, 4, 3);
-        createPoint(4, 4, 2);
-        createPoint(3, 4, 2);
-        createPoint(3, 4, 1);
-        createPoint(4, 4, 1);
+        createPoint(4, 3, 1, false, FirstPoints, FirstLines);
+        createPoint(4, 2, 2, true, FirstPoints, FirstLines);
+        createPoint(4, 1, 3, true, FirstPoints, FirstLines);
+        createPoint(4, 1, 4, true, FirstPoints, FirstLines);
+        createPoint(3, 1, 4, true, FirstPoints, FirstLines);
+        createPoint(2, 2, 4, true, FirstPoints, FirstLines);
+        createPoint(1, 3, 4, true, FirstPoints, FirstLines);
+        createPoint(2, 3, 4, true, FirstPoints, FirstLines);
+        createPoint(3, 2, 4, true, FirstPoints, FirstLines);
+        createPoint(4, 2, 4, true, FirstPoints, FirstLines);
+        createPoint(4, 2, 3, true, FirstPoints, FirstLines);
+        createPoint(3, 2, 3, true, FirstPoints, FirstLines);
+        createPoint(2, 3, 3, true, FirstPoints, FirstLines);
+        createPoint(3, 3, 3, true, FirstPoints, FirstLines);
+        createPoint(3, 3, 4, true, FirstPoints, FirstLines);
+        createPoint(4, 3, 4, true, FirstPoints, FirstLines);
+        createPoint(4, 3, 3, true, FirstPoints, FirstLines);
+        createPoint(4, 3, 2, true, FirstPoints, FirstLines);
+        createPoint(3, 3, 2, true, FirstPoints, FirstLines);
+        createPoint(2, 4, 2, true, FirstPoints, FirstLines);
+        createPoint(2, 4, 3, true, FirstPoints, FirstLines);
+        createPoint(1, 4, 3, true, FirstPoints, FirstLines);
+        createPoint(1, 4, 4, true, FirstPoints, FirstLines);
+        createPoint(2, 4, 4, true, FirstPoints, FirstLines);
+        createPoint(3, 4, 4, true, FirstPoints, FirstLines);
+        createPoint(3, 4, 3, true, FirstPoints, FirstLines);
+        createPoint(4, 4, 3, true, FirstPoints, FirstLines);
+        createPoint(4, 4, 2, true, FirstPoints, FirstLines);
+        createPoint(3, 4, 2, true, FirstPoints, FirstLines);
+        createPoint(3, 4, 1, true, FirstPoints, FirstLines);
+        createPoint(4, 4, 1, true, FirstPoints, FirstLines);
     }
 
     void DrawTriadSet()
@@ -286,10 +289,10 @@ public class ASM : MonoBehaviour
 
     void ClearPointsAndLines()
     {
-        ClearBuffer(PointList);
-        ClearBuffer(LineList);
-        PointList.Clear();
-        LineList.Clear();
+        //ClearBuffer(PointList);
+        //ClearBuffer(LineList);
+        //PointList.Clear();
+        //LineList.Clear();
     }
 
     void ClearBuffer(List<GameObject> buffer)
@@ -377,6 +380,7 @@ public class ASM : MonoBehaviour
     // and color lineColor
     public void AddLine(Vector3 p1, Vector3 p2, float linewidth = defaultLineWidth, Color lineColor = default(Color), List<GameObject> buffer = null)
     {
+        Debug.Log("making a line");
         var go = Instantiate(linePrefab);
         go.transform.position = p1;
         go.transform.localScale = new Vector3(go.transform.localScale.x * linewidth, go.transform.localScale.y * linewidth, Vector3.Distance(p1, p2));
@@ -437,11 +441,16 @@ public class ASM : MonoBehaviour
                 ClearPointsAndLines();
             }
             LeftUIypos += 20;
-            //if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Draw First Path"))
-            //{
-            //    StopAllCoroutines();
-            //    DrawFirstPath();
-            //}
+            if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Draw First Path"))
+            {
+                StopAllCoroutines();
+                DrawFirstPath();
+            }
+            if (GUI.Button(new Rect(10 + buttonWidths + 10, LeftUIypos, buttonWidths, 20), "Delete First Path"))
+            {
+                ClearBuffer(FirstLines);
+                ClearBuffer(FirstPoints);
+            }
             LeftUIypos += 20;
             if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Draw Triad Set"))
             {
@@ -452,6 +461,17 @@ public class ASM : MonoBehaviour
             {
                 ClearBuffer(TriadLines);
                 ClearBuffer(TriadPoints);
+            }
+            LeftUIypos += 20;
+            if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Draw Hamilton Set"))
+            {
+                StopAllCoroutines();
+                DrawHamiltonCycle();
+            }
+            if (GUI.Button(new Rect(10 + buttonWidths + 10, LeftUIypos, buttonWidths, 20), "Delete Hamilton Set"))
+            {
+                ClearBuffer(HamiltonLines);
+                ClearBuffer(HamiltonPoints);
             }
             LeftUIypos += 20;
             if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Draw 6x6 cube"))
@@ -466,19 +486,19 @@ public class ASM : MonoBehaviour
         }
         if (toggleLabels)
         {
-            for (int i = 0; i < PointList.Count; i++) // for each point in PointList
-            {
-                var pointCoords = PointList[i].transform.position;
-                var screenPoint = mainCam.WorldToScreenPoint(pointCoords);
-                var width = 50f;
-                var height = 20f;
-                // show the label
-                GUI.Label(
-                    new Rect(screenPoint.x - width / 2,
-                    Screen.height - screenPoint.y, width, height),
-                    "[" + (pointCoords.x + 1) + ", " + (pointCoords.y + 1) + ", " + (pointCoords.z + 1) + "]",
-                    pointLabelStyle);
-            }
+            //for (int i = 0; i < PointList.Count; i++) // for each point in PointList
+            //{
+            //    var pointCoords = PointList[i].transform.position;
+            //    var screenPoint = mainCam.WorldToScreenPoint(pointCoords);
+            //    var width = 50f;
+            //    var height = 20f;
+            //    // show the label
+            //    GUI.Label(
+            //        new Rect(screenPoint.x - width / 2,
+            //        Screen.height - screenPoint.y, width, height),
+            //        "[" + (pointCoords.x + 1) + ", " + (pointCoords.y + 1) + ", " + (pointCoords.z + 1) + "]",
+            //        pointLabelStyle);
+            //}
         }
     }
 
@@ -487,22 +507,23 @@ public class ASM : MonoBehaviour
         cameraXangle = defaultCameraAngleX;
         cameraYangle = defaultCameraAngleY;
         camDistance = defaultCamDistance;
-        for (int i = 0; i < PointList.Count; i++)
-        {
-            PointList[i].GetComponent<Renderer>().material.color = Color.black;
-        }
+        //for (int i = 0; i < PointList.Count; i++)
+        //{
+        //    PointList[i].GetComponent<Renderer>().material.color = Color.black;
+        //}
     }
 
     IEnumerator AnimateLine()
     {
-        for (int i = 0; i < PointList.Count; i++)
-        {
-            PointList[i].GetComponent<Renderer>().material.color = Color.black;
-        }
-        for (int i = 0; i < PointList.Count; i++)
-        {
-            PointList[i].GetComponent<Renderer>().material.color = Color.yellow;
-            yield return new WaitForSeconds(0.1f);
-        }
+        yield return new WaitForSeconds(0.1f);
+        //for (int i = 0; i < PointList.Count; i++)
+        //{
+        //    PointList[i].GetComponent<Renderer>().material.color = Color.black;
+        //}
+        //for (int i = 0; i < PointList.Count; i++)
+        //{
+        //    PointList[i].GetComponent<Renderer>().material.color = Color.yellow;
+        //    yield return new WaitForSeconds(0.1f);
+        //}
     }
 }
