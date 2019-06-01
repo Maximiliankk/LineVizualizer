@@ -153,6 +153,53 @@ public class ASM : MonoBehaviour
         currentColor = c;
     }
 
+
+    void DrawHamiltonCycle()
+    {
+        SetColor(Color.black); // color of this path
+        createPoint(4, 4, 3, false);
+        createPoint(3, 4, 3);
+        createPoint(3, 4, 2);
+        createPoint(4, 4, 2);
+        createPoint(4, 4, 1);
+        createPoint(3, 4, 1);
+        createPoint(4, 3, 1);
+        createPoint(4, 2, 2);
+        createPoint(4, 1, 3);
+        createPoint(4, 1, 4);
+        createPoint(3, 1, 4);
+        createPoint(2, 2, 4);
+        createPoint(1, 3, 4);
+        createPoint(2, 3, 4);
+        createPoint(2, 3, 3);
+        createPoint(3, 3, 3);
+        createPoint(4, 3, 3);
+        createPoint(4, 3, 4);
+        createPoint(3, 3, 4);
+        createPoint(4, 2, 4);
+        createPoint(3, 2, 4);
+        createPoint(3, 2, 3);
+        createPoint(4, 2, 3);
+        createPoint(4, 3, 2);
+        createPoint(3, 3, 2);
+        createPoint(2, 4, 2);
+        createPoint(2, 4, 3);
+        createPoint(1, 4, 3);
+        createPoint(1, 4, 4);
+        createPoint(2, 4, 4);
+        createPoint(3, 4, 4);
+        createPoint(4, 4, 4);
+        createPoint(4, 5, 3);
+        createPoint(3, 6, 3);
+        createPoint(3, 5, 4);
+        createPoint(3, 4, 5);
+        createPoint(3, 3, 6);
+        createPoint(4, 3, 5);
+        createPoint(5, 3, 4);
+        createPoint(6, 3, 3);
+        createPoint(5, 4, 3);
+    }
+
     void DrawFirstPath()
     {
         SetColor(Color.black); // color of this path
