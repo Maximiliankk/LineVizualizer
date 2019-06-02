@@ -44,6 +44,7 @@ public class ASM : MonoBehaviour
     public float cameraYangle;
     public float camDistance;
 
+    GameObject hoveredObject;
     bool oneSelected = false;
     GameObject selectedPoint;
     private Vector3 mouseOldPos;
@@ -64,17 +65,102 @@ public class ASM : MonoBehaviour
         ResetCamera();
         pointLabelStyle.normal.textColor = Color.red;
         menuLabelStyle.normal.textColor = Color.black;
-
         mainCam = Camera.main;
-
-//        DrawFirstPath();
-//        DrawTriadSet();
-
-        // grid points
-
-
     }
-
+    void DrawHamiltonCycle()
+    {
+        SetColor(Color.black); // color of this path
+        CreatePoint(4, 4, 3, false, HamiltonPoints, HamiltonLines);
+        CreatePoint(3, 4, 3, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(3, 4, 2, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(4, 4, 2, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(4, 4, 1, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(3, 4, 1, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(4, 3, 1, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(4, 2, 2, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(4, 1, 3, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(4, 1, 4, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(3, 1, 4, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(2, 2, 4, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(1, 3, 4, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(2, 3, 4, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(2, 3, 3, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(3, 3, 3, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(4, 3, 3, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(4, 3, 4, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(3, 3, 4, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(4, 2, 4, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(3, 2, 4, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(3, 2, 3, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(4, 2, 3, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(4, 3, 2, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(3, 3, 2, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(2, 4, 2, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(2, 4, 3, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(1, 4, 3, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(1, 4, 4, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(2, 4, 4, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(3, 4, 4, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(4, 4, 4, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(4, 5, 3, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(3, 6, 3, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(3, 5, 4, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(3, 4, 5, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(3, 3, 6, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(4, 3, 5, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(5, 3, 4, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(6, 3, 3, true, HamiltonPoints, HamiltonLines);
+        CreatePoint(5, 4, 3, true, HamiltonPoints, HamiltonLines);
+    }
+    void DrawFirstPath()
+    {
+        SetColor(Color.black); // color of this path
+        CreatePoint(4, 3, 1, false, FirstPoints, FirstLines);
+        CreatePoint(4, 2, 2, true, FirstPoints, FirstLines);
+        CreatePoint(4, 1, 3, true, FirstPoints, FirstLines);
+        CreatePoint(4, 1, 4, true, FirstPoints, FirstLines);
+        CreatePoint(3, 1, 4, true, FirstPoints, FirstLines);
+        CreatePoint(2, 2, 4, true, FirstPoints, FirstLines);
+        CreatePoint(1, 3, 4, true, FirstPoints, FirstLines);
+        CreatePoint(2, 3, 4, true, FirstPoints, FirstLines);
+        CreatePoint(3, 2, 4, true, FirstPoints, FirstLines);
+        CreatePoint(4, 2, 4, true, FirstPoints, FirstLines);
+        CreatePoint(4, 2, 3, true, FirstPoints, FirstLines);
+        CreatePoint(3, 2, 3, true, FirstPoints, FirstLines);
+        CreatePoint(2, 3, 3, true, FirstPoints, FirstLines);
+        CreatePoint(3, 3, 3, true, FirstPoints, FirstLines);
+        CreatePoint(3, 3, 4, true, FirstPoints, FirstLines);
+        CreatePoint(4, 3, 4, true, FirstPoints, FirstLines);
+        CreatePoint(4, 3, 3, true, FirstPoints, FirstLines);
+        CreatePoint(4, 3, 2, true, FirstPoints, FirstLines);
+        CreatePoint(3, 3, 2, true, FirstPoints, FirstLines);
+        CreatePoint(2, 4, 2, true, FirstPoints, FirstLines);
+        CreatePoint(2, 4, 3, true, FirstPoints, FirstLines);
+        CreatePoint(1, 4, 3, true, FirstPoints, FirstLines);
+        CreatePoint(1, 4, 4, true, FirstPoints, FirstLines);
+        CreatePoint(2, 4, 4, true, FirstPoints, FirstLines);
+        CreatePoint(3, 4, 4, true, FirstPoints, FirstLines);
+        CreatePoint(3, 4, 3, true, FirstPoints, FirstLines);
+        CreatePoint(4, 4, 3, true, FirstPoints, FirstLines);
+        CreatePoint(4, 4, 2, true, FirstPoints, FirstLines);
+        CreatePoint(3, 4, 2, true, FirstPoints, FirstLines);
+        CreatePoint(3, 4, 1, true, FirstPoints, FirstLines);
+        CreatePoint(4, 4, 1, true, FirstPoints, FirstLines);
+    }
+    void DrawTriadSet()
+    {
+        SetColor(Color.green); // color of this path
+        CreatePoint(6, 3, 3, false, TriadPoints, TriadLines);
+        CreatePoint(3, 6, 3, true, TriadPoints, TriadLines);
+        CreatePoint(3, 3, 6, true, TriadPoints, TriadLines);
+        CreatePoint(4, 4, 4, true, TriadPoints, TriadLines);
+        CreatePoint(5, 3, 4, true, TriadPoints, TriadLines);
+        CreatePoint(5, 4, 3, true, TriadPoints, TriadLines);
+        CreatePoint(4, 5, 3, true, TriadPoints, TriadLines);
+        CreatePoint(3, 5, 4, true, TriadPoints, TriadLines);
+        CreatePoint(3, 4, 5, true, TriadPoints, TriadLines);
+        CreatePoint(4, 3, 5, true, TriadPoints, TriadLines);
+    }
     void drawGridLines(int dim, float scale, Color c)
     {
         // grid lines 
@@ -116,11 +202,10 @@ public class ASM : MonoBehaviour
             }
         }
         // points
-        drawGridPoints(dim, scale, Color.black);
+        DrawGridPoints(dim, scale, Color.black);
     }
-
     // scale is multiplier
-    void drawGridPoints(int dim, float scale, Color c)
+    void DrawGridPoints(int dim, float scale, Color c)
     {
         for (int i = 0; i < dim; i++)
         {
@@ -137,9 +222,8 @@ public class ASM : MonoBehaviour
             }
         }
     }
-
     // Makes a sphere and a line (by default)
-    void createPoint(float x, float y, float z, bool makeLine, List<GameObject> pointbuffer, List<GameObject> linebuffer)
+    void CreatePoint(float x, float y, float z, bool makeLine, List<GameObject> pointbuffer, List<GameObject> linebuffer)
     {
         GameObject go = Instantiate(pointPrefab);
         go.transform.position = new Vector3(x - 1, y - 1, z - 1);
@@ -152,145 +236,10 @@ public class ASM : MonoBehaviour
             AddLine(go.transform.position, pointbuffer[pointbuffer.Count - 2].transform.position, defaultLineWidth * 2, currentColor, linebuffer);
         }
     }
-
     void SetColor(Color c)
     {
         currentColor = c;
     }
-
-    //void DrawFirstPath()
-    //{
-    //    SetColor(Color.black); // color of this path
-    //    createPoint(4, 3, 1, false);
-    //    createPoint(4, 2, 2, true, TriadLines, TriadPoints);
-    //    createPoint(4, 1, 3);
-    //    createPoint(4, 1, 4);
-    //    createPoint(3, 1, 4);
-    //    createPoint(2, 2, 4);
-    //    createPoint(1, 3, 4);
-    //    createPoint(2, 3, 4);
-    //    createPoint(3, 2, 4);
-    //    createPoint(4, 2, 4);
-    //    createPoint(4, 2, 3);
-    //    createPoint(3, 2, 3);
-    //    createPoint(2, 3, 3);
-    //    createPoint(3, 3, 3);
-    //    createPoint(3, 3, 4);
-    //    createPoint(4, 3, 4);
-    //    createPoint(4, 3, 3);
-    //    createPoint(4, 3, 2);
-    //    createPoint(3, 3, 2);
-    //    createPoint(2, 4, 2);
-    //    createPoint(2, 4, 3);
-    //    createPoint(1, 4, 3);
-    //    createPoint(1, 4, 4);
-    //    createPoint(2, 4, 4);
-    //    createPoint(3, 4, 4);
-    //    createPoint(3, 4, 3);
-    //    createPoint(4, 4, 3);
-    //    createPoint(4, 4, 2);
-    //    createPoint(3, 4, 2);
-    //    createPoint(3, 4, 1);
-    //    createPoint(4, 4, 1);
-    //}
-
-    void DrawHamiltonCycle()
-    {
-        SetColor(Color.black); // color of this path
-        createPoint(4, 4, 3, false, HamiltonPoints, HamiltonLines);
-        createPoint(3, 4, 3, true, HamiltonPoints, HamiltonLines);
-        createPoint(3, 4, 2, true, HamiltonPoints, HamiltonLines);
-        createPoint(4, 4, 2, true, HamiltonPoints, HamiltonLines);
-        createPoint(4, 4, 1, true, HamiltonPoints, HamiltonLines);
-        createPoint(3, 4, 1, true, HamiltonPoints, HamiltonLines);
-        createPoint(4, 3, 1, true, HamiltonPoints, HamiltonLines);
-        createPoint(4, 2, 2, true, HamiltonPoints, HamiltonLines);
-        createPoint(4, 1, 3, true, HamiltonPoints, HamiltonLines);
-        createPoint(4, 1, 4, true, HamiltonPoints, HamiltonLines);
-        createPoint(3, 1, 4, true, HamiltonPoints, HamiltonLines);
-        createPoint(2, 2, 4, true, HamiltonPoints, HamiltonLines);
-        createPoint(1, 3, 4, true, HamiltonPoints, HamiltonLines);
-        createPoint(2, 3, 4, true, HamiltonPoints, HamiltonLines);
-        createPoint(2, 3, 3, true, HamiltonPoints, HamiltonLines);
-        createPoint(3, 3, 3, true, HamiltonPoints, HamiltonLines);
-        createPoint(4, 3, 3, true, HamiltonPoints, HamiltonLines);
-        createPoint(4, 3, 4, true, HamiltonPoints, HamiltonLines);
-        createPoint(3, 3, 4, true, HamiltonPoints, HamiltonLines);
-        createPoint(4, 2, 4, true, HamiltonPoints, HamiltonLines);
-        createPoint(3, 2, 4, true, HamiltonPoints, HamiltonLines);
-        createPoint(3, 2, 3, true, HamiltonPoints, HamiltonLines);
-        createPoint(4, 2, 3, true, HamiltonPoints, HamiltonLines);
-        createPoint(4, 3, 2, true, HamiltonPoints, HamiltonLines);
-        createPoint(3, 3, 2, true, HamiltonPoints, HamiltonLines);
-        createPoint(2, 4, 2, true, HamiltonPoints, HamiltonLines);
-        createPoint(2, 4, 3, true, HamiltonPoints, HamiltonLines);
-        createPoint(1, 4, 3, true, HamiltonPoints, HamiltonLines);
-        createPoint(1, 4, 4, true, HamiltonPoints, HamiltonLines);
-        createPoint(2, 4, 4, true, HamiltonPoints, HamiltonLines);
-        createPoint(3, 4, 4, true, HamiltonPoints, HamiltonLines);
-        createPoint(4, 4, 4, true, HamiltonPoints, HamiltonLines);
-        createPoint(4, 5, 3, true, HamiltonPoints, HamiltonLines);
-        createPoint(3, 6, 3, true, HamiltonPoints, HamiltonLines);
-        createPoint(3, 5, 4, true, HamiltonPoints, HamiltonLines);
-        createPoint(3, 4, 5, true, HamiltonPoints, HamiltonLines);
-        createPoint(3, 3, 6, true, HamiltonPoints, HamiltonLines);
-        createPoint(4, 3, 5, true, HamiltonPoints, HamiltonLines);
-        createPoint(5, 3, 4, true, HamiltonPoints, HamiltonLines);
-        createPoint(6, 3, 3, true, HamiltonPoints, HamiltonLines);
-        createPoint(5, 4, 3, true, HamiltonPoints, HamiltonLines);
-    }
-
-    void DrawFirstPath()
-    {
-        SetColor(Color.black); // color of this path
-        createPoint(4, 3, 1, false, FirstPoints, FirstLines);
-        createPoint(4, 2, 2, true, FirstPoints, FirstLines);
-        createPoint(4, 1, 3, true, FirstPoints, FirstLines);
-        createPoint(4, 1, 4, true, FirstPoints, FirstLines);
-        createPoint(3, 1, 4, true, FirstPoints, FirstLines);
-        createPoint(2, 2, 4, true, FirstPoints, FirstLines);
-        createPoint(1, 3, 4, true, FirstPoints, FirstLines);
-        createPoint(2, 3, 4, true, FirstPoints, FirstLines);
-        createPoint(3, 2, 4, true, FirstPoints, FirstLines);
-        createPoint(4, 2, 4, true, FirstPoints, FirstLines);
-        createPoint(4, 2, 3, true, FirstPoints, FirstLines);
-        createPoint(3, 2, 3, true, FirstPoints, FirstLines);
-        createPoint(2, 3, 3, true, FirstPoints, FirstLines);
-        createPoint(3, 3, 3, true, FirstPoints, FirstLines);
-        createPoint(3, 3, 4, true, FirstPoints, FirstLines);
-        createPoint(4, 3, 4, true, FirstPoints, FirstLines);
-        createPoint(4, 3, 3, true, FirstPoints, FirstLines);
-        createPoint(4, 3, 2, true, FirstPoints, FirstLines);
-        createPoint(3, 3, 2, true, FirstPoints, FirstLines);
-        createPoint(2, 4, 2, true, FirstPoints, FirstLines);
-        createPoint(2, 4, 3, true, FirstPoints, FirstLines);
-        createPoint(1, 4, 3, true, FirstPoints, FirstLines);
-        createPoint(1, 4, 4, true, FirstPoints, FirstLines);
-        createPoint(2, 4, 4, true, FirstPoints, FirstLines);
-        createPoint(3, 4, 4, true, FirstPoints, FirstLines);
-        createPoint(3, 4, 3, true, FirstPoints, FirstLines);
-        createPoint(4, 4, 3, true, FirstPoints, FirstLines);
-        createPoint(4, 4, 2, true, FirstPoints, FirstLines);
-        createPoint(3, 4, 2, true, FirstPoints, FirstLines);
-        createPoint(3, 4, 1, true, FirstPoints, FirstLines);
-        createPoint(4, 4, 1, true, FirstPoints, FirstLines);
-    }
-
-    void DrawTriadSet()
-    {
-        SetColor(Color.green); // color of this path
-        createPoint(6, 3, 3, false, TriadPoints, TriadLines);
-        createPoint(3, 6, 3, true, TriadPoints, TriadLines);
-        createPoint(3, 3, 6, true, TriadPoints, TriadLines);
-        createPoint(4, 4, 4, true, TriadPoints, TriadLines);
-        createPoint(5, 3, 4, true, TriadPoints, TriadLines);
-        createPoint(5, 4, 3, true, TriadPoints, TriadLines);
-        createPoint(4, 5, 3, true, TriadPoints, TriadLines);
-        createPoint(3, 5, 4, true, TriadPoints, TriadLines);
-        createPoint(3, 4, 5, true, TriadPoints, TriadLines);
-        createPoint(4, 3, 5, true, TriadPoints, TriadLines);
-    }
-    
     void ClearBuffer(List<GameObject> buffer)
     {
         foreach(var go in buffer)
@@ -299,7 +248,6 @@ public class ASM : MonoBehaviour
         }
         buffer.Clear();
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -370,7 +318,6 @@ public class ASM : MonoBehaviour
             }
         }
     }
-
     // creates a cylinder in the scene connecting p1 to p2
     // of thickness linewidth
     // and color lineColor
@@ -435,6 +382,7 @@ public class ASM : MonoBehaviour
                 StopAllCoroutines();
                 StartCoroutine(AnimateLine());
             }
+            LeftUIypos += 20;
             LeftUIypos += 20;
             if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Draw First Path"))
             {
