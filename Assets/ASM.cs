@@ -36,9 +36,9 @@ public class ASM : MonoBehaviour
     public float defaultCameraAngleX = 45;
     public float defaultCameraAngleY = 45;
     public float defaultCamDistance = 10;
-    private float cameraXangle;
-    private float cameraYangle;
-    private float camDistance;
+    public float cameraXangle;
+    public float cameraYangle;
+    public float camDistance;
 
     bool oneSelected = false;
     GameObject selectedPoint;
@@ -286,15 +286,7 @@ public class ASM : MonoBehaviour
         createPoint(3, 4, 5, true, TriadPoints, TriadLines);
         createPoint(4, 3, 5, true, TriadPoints, TriadLines);
     }
-
-    void ClearPointsAndLines()
-    {
-        //ClearBuffer(PointList);
-        //ClearBuffer(LineList);
-        //PointList.Clear();
-        //LineList.Clear();
-    }
-
+    
     void ClearBuffer(List<GameObject> buffer)
     {
         foreach(var go in buffer)
@@ -428,16 +420,16 @@ public class ASM : MonoBehaviour
                 ResetCamera();
             }
             LeftUIypos += 20;
+            if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Animate Camera"))
+            {
+                StopAllCoroutines();
+                StartCoroutine(AnimateCamera());
+            }
+            LeftUIypos += 20;
             if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Animate"))
             {
                 StopAllCoroutines();
                 StartCoroutine(AnimateLine());
-            }
-            LeftUIypos += 20;
-            if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Clear Points"))
-            {
-                StopAllCoroutines();
-                ClearPointsAndLines();
             }
             LeftUIypos += 20;
             if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Draw First Path"))
@@ -511,6 +503,39 @@ public class ASM : MonoBehaviour
         cameraXangle = defaultCameraAngleX;
         cameraYangle = defaultCameraAngleY;
         camDistance = defaultCamDistance;
+    }
+
+    IEnumerator AnimateCamera()
+    {
+        Vector2 [] targets = { new Vector2(5,5), new Vector2(5, 85), new Vector2(85, 85), new Vector2(85, 5), new Vector2(35, 35) };
+        float speed1 = 0.3f, speed2 = 0.1f, dist1 = 10, dist2 = 1;
+
+        for (int i = 0; i < targets.Length; i++)
+        {
+            Vector2 target = targets[i];
+            var move = target - new Vector2(cameraXangle, cameraYangle);
+            while (true)
+            {
+                move = target - new Vector2(cameraXangle, cameraYangle);
+                if (move.magnitude > dist1)
+                {
+                    cameraXangle += move.normalized.x * speed1;
+                    cameraYangle += move.normalized.y * speed1;
+                }
+                else if (move.magnitude > dist2)
+                {
+                    cameraXangle += move.normalized.x * speed2;
+                    cameraYangle += move.normalized.y * speed2;
+                }
+                else
+                {
+                    cameraXangle = target.x;
+                    cameraYangle = target.y;
+                    break;
+                }
+                yield return new WaitForEndOfFrame();
+            }
+        }
     }
 
     IEnumerator AnimateLine()
