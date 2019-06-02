@@ -575,6 +575,8 @@ public class ASM : MonoBehaviour
             if(pointlists[i].Count > 1)
             {
                 pointlists[i][pointlists[i].Count - 1].GetComponentInChildren<Renderer>().material.color = Color.yellow;
+                AudioSource.PlayClipAtPoint(audioClips[currentIndex], mainCam.transform.position);
+                NextSound();
             }
         }
     }
