@@ -165,40 +165,40 @@ public class ASM : MonoBehaviour
         CreatePathPoint(6, 3, 3, true, HamiltonPoints, HamiltonLines);
         CreatePathPoint(5, 4, 3, true, HamiltonPoints, HamiltonLines);
     }
-    void DrawFirstPath()
+    void DrawSeventhChords()
     {
         SetColor(Color.black); // color of this path
-        CreatePathPoint(4, 3, 1, false, FirstPoints, FirstLines);
-        CreatePathPoint(4, 2, 2, true, FirstPoints, FirstLines);
-        CreatePathPoint(4, 1, 3, true, FirstPoints, FirstLines);
-        CreatePathPoint(4, 1, 4, true, FirstPoints, FirstLines);
-        CreatePathPoint(3, 1, 4, true, FirstPoints, FirstLines);
-        CreatePathPoint(2, 2, 4, true, FirstPoints, FirstLines);
-        CreatePathPoint(1, 3, 4, true, FirstPoints, FirstLines);
-        CreatePathPoint(2, 3, 4, true, FirstPoints, FirstLines);
-        CreatePathPoint(3, 2, 4, true, FirstPoints, FirstLines);
-        CreatePathPoint(4, 2, 4, true, FirstPoints, FirstLines);
-        CreatePathPoint(4, 2, 3, true, FirstPoints, FirstLines);
-        CreatePathPoint(3, 2, 3, true, FirstPoints, FirstLines);
-        CreatePathPoint(2, 3, 3, true, FirstPoints, FirstLines);
-        CreatePathPoint(3, 3, 3, true, FirstPoints, FirstLines);
-        CreatePathPoint(3, 3, 4, true, FirstPoints, FirstLines);
-        CreatePathPoint(4, 3, 4, true, FirstPoints, FirstLines);
-        CreatePathPoint(4, 3, 3, true, FirstPoints, FirstLines);
-        CreatePathPoint(4, 3, 2, true, FirstPoints, FirstLines);
-        CreatePathPoint(3, 3, 2, true, FirstPoints, FirstLines);
-        CreatePathPoint(2, 4, 2, true, FirstPoints, FirstLines);
-        CreatePathPoint(2, 4, 3, true, FirstPoints, FirstLines);
-        CreatePathPoint(1, 4, 3, true, FirstPoints, FirstLines);
-        CreatePathPoint(1, 4, 4, true, FirstPoints, FirstLines);
-        CreatePathPoint(2, 4, 4, true, FirstPoints, FirstLines);
-        CreatePathPoint(3, 4, 4, true, FirstPoints, FirstLines);
-        CreatePathPoint(3, 4, 3, true, FirstPoints, FirstLines);
-        CreatePathPoint(4, 4, 3, true, FirstPoints, FirstLines);
-        CreatePathPoint(4, 4, 2, true, FirstPoints, FirstLines);
-        CreatePathPoint(3, 4, 2, true, FirstPoints, FirstLines);
-        CreatePathPoint(3, 4, 1, true, FirstPoints, FirstLines);
-        CreatePathPoint(4, 4, 1, true, FirstPoints, FirstLines);
+        CreatePoint(4, 3, 1, FirstPoints);
+        CreatePoint(4, 2, 2, FirstPoints);
+        CreatePoint(4, 1, 3, FirstPoints);
+        CreatePoint(4, 1, 4, FirstPoints);
+        CreatePoint(3, 1, 4, FirstPoints);
+        CreatePoint(2, 2, 4, FirstPoints);
+        CreatePoint(1, 3, 4, FirstPoints);
+        CreatePoint(2, 3, 4, FirstPoints);
+        CreatePoint(3, 2, 4, FirstPoints);
+        CreatePoint(4, 2, 4, FirstPoints);
+        CreatePoint(4, 2, 3, FirstPoints);
+        CreatePoint(3, 2, 3, FirstPoints);
+        CreatePoint(2, 3, 3, FirstPoints);
+        CreatePoint(3, 3, 3, FirstPoints);
+        CreatePoint(3, 3, 4, FirstPoints);
+        CreatePoint(4, 3, 4, FirstPoints);
+        CreatePoint(4, 3, 3, FirstPoints);
+        CreatePoint(4, 3, 2, FirstPoints);
+        CreatePoint(3, 3, 2, FirstPoints);
+        CreatePoint(2, 4, 2, FirstPoints);
+        CreatePoint(2, 4, 3, FirstPoints);
+        CreatePoint(1, 4, 3, FirstPoints);
+        CreatePoint(1, 4, 4, FirstPoints);
+        CreatePoint(2, 4, 4, FirstPoints);
+        CreatePoint(3, 4, 4, FirstPoints);
+        CreatePoint(3, 4, 3, FirstPoints);
+        CreatePoint(4, 4, 3, FirstPoints);
+        CreatePoint(4, 4, 2, FirstPoints);
+        CreatePoint(3, 4, 2, FirstPoints);
+        CreatePoint(3, 4, 1, FirstPoints);
+        CreatePoint(4, 4, 1, FirstPoints);
     }
     void DrawTriadSet()
     {
@@ -286,9 +286,18 @@ public class ASM : MonoBehaviour
 
         pointbuffer.Add(go);
         if (makeLine)
-        { 
+        {
             AddLine(go.transform.position, pointbuffer[pointbuffer.Count - 2].transform.position, defaultLineWidth * 2, currentColor, linebuffer);
         }
+    }
+    // Makes a sphere and a line (by default)
+    void CreatePoint(float x, float y, float z, List<GameObject> pointbuffer)
+    {
+        GameObject go = Instantiate(pointPrefab);
+        go.transform.position = new Vector3(x - 1, y - 1, z - 1);
+        go.transform.GetComponent<Renderer>().material.color = Color.black;
+        go.GetComponent<Renderer>().material.color = currentColor;
+        pointbuffer.Add(go);
     }
     void SetColor(Color c)
     {
@@ -467,7 +476,7 @@ public class ASM : MonoBehaviour
             if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Draw First Path"))
             {
                 StopAllCoroutines();
-                DrawFirstPath();
+                DrawSeventhChords();
             }
             if (GUI.Button(new Rect(10 + buttonWidths + 10, LeftUIypos, buttonWidths, 20), "Delete First Path"))
             {
