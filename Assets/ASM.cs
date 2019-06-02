@@ -268,6 +268,11 @@ public class ASM : MonoBehaviour
         {
             ResetCamera(); // reset the camera angle to default
         }
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            StopAllCoroutines();
+            StartCoroutine(AnimateCamera());
+        }
 
         if (Input.GetMouseButton(0)) // left mouse button
         {
