@@ -217,6 +217,7 @@ public class ASM : MonoBehaviour
                     go.transform.position = new Vector3(i, j, k);
                     go.transform.localScale *= defaultLineWidth * scale;
                     go.transform.GetComponent<Renderer>().material.color = c;
+                    go.tag = "GridPoint";
                     GridPoints.Add(go);
                 }
             }
@@ -509,7 +510,7 @@ public class ASM : MonoBehaviour
     {
         List<GameObject>[] linelists = { HamiltonLines, FirstLines, TriadLines };
         List<GameObject>[] pointlists = { HamiltonPoints, FirstPoints, TriadPoints };
-        
+
         //Debug.Log("hlines" + HamiltonLines.Count);
         //Debug.Log("hpoints" + HamiltonPoints.Count);
 
@@ -518,6 +519,24 @@ public class ASM : MonoBehaviour
 
         //Debug.Log("triad lines" + TriadLines.Count);
         //Debug.Log("triad points" + TriadPoints.Count);
+        for (int i = 0; i < linelists.Length; i++)
+        {
+            for (int j = 0; j < linelists[i].Count; j++)
+            {
+                if (j <= linelists[i].Count)
+                {
+                    linelists[i][j].GetComponentInChildren<Renderer>().material.color = Color.black;
+                }
+                if (j <= pointlists[i].Count)
+                {
+                    pointlists[i][j].GetComponentInChildren<Renderer>().material.color = Color.black;
+                }
+            }
+            if (pointlists[i].Count > 1)
+            {
+                pointlists[i][pointlists[i].Count - 1].GetComponentInChildren<Renderer>().material.color = Color.black;
+            }
+        }
 
         for (int i = 0; i < linelists.Length; i++)
         {
