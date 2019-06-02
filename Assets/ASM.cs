@@ -275,16 +275,16 @@ public class ASM : MonoBehaviour
     void DrawTriadSet()
     {
         SetColor(Color.green); // color of this path
-        createPoint(6, 3, 3, false, TriadLines, TriadPoints);
-        createPoint(3, 6, 3, true, TriadLines, TriadPoints);
-        createPoint(3, 3, 6, true, TriadLines, TriadPoints);
-        createPoint(4, 4, 4, true, TriadLines, TriadPoints);
-        createPoint(5, 3, 4, true, TriadLines, TriadPoints);
-        createPoint(5, 4, 3, true, TriadLines, TriadPoints);
-        createPoint(4, 5, 3, true, TriadLines, TriadPoints);
-        createPoint(3, 5, 4, true, TriadLines, TriadPoints);
-        createPoint(3, 4, 5, true, TriadLines, TriadPoints);
-        createPoint(4, 3, 5, true, TriadLines, TriadPoints);
+        createPoint(6, 3, 3, false, TriadPoints, TriadLines);
+        createPoint(3, 6, 3, true, TriadPoints, TriadLines);
+        createPoint(3, 3, 6, true, TriadPoints, TriadLines);
+        createPoint(4, 4, 4, true, TriadPoints, TriadLines);
+        createPoint(5, 3, 4, true, TriadPoints, TriadLines);
+        createPoint(5, 4, 3, true, TriadPoints, TriadLines);
+        createPoint(4, 5, 3, true, TriadPoints, TriadLines);
+        createPoint(3, 5, 4, true, TriadPoints, TriadLines);
+        createPoint(3, 4, 5, true, TriadPoints, TriadLines);
+        createPoint(4, 3, 5, true, TriadPoints, TriadLines);
     }
 
     void ClearPointsAndLines()
@@ -380,7 +380,6 @@ public class ASM : MonoBehaviour
     // and color lineColor
     public void AddLine(Vector3 p1, Vector3 p2, float linewidth = defaultLineWidth, Color lineColor = default(Color), List<GameObject> buffer = null)
     {
-        Debug.Log("making a line");
         var go = Instantiate(linePrefab);
         go.transform.position = p1;
         go.transform.localScale = new Vector3(go.transform.localScale.x * linewidth, go.transform.localScale.y * linewidth, Vector3.Distance(p1, p2));
@@ -486,19 +485,24 @@ public class ASM : MonoBehaviour
         }
         if (toggleLabels)
         {
-            //for (int i = 0; i < PointList.Count; i++) // for each point in PointList
-            //{
-            //    var pointCoords = PointList[i].transform.position;
-            //    var screenPoint = mainCam.WorldToScreenPoint(pointCoords);
-            //    var width = 50f;
-            //    var height = 20f;
-            //    // show the label
-            //    GUI.Label(
-            //        new Rect(screenPoint.x - width / 2,
-            //        Screen.height - screenPoint.y, width, height),
-            //        "[" + (pointCoords.x + 1) + ", " + (pointCoords.y + 1) + ", " + (pointCoords.z + 1) + "]",
-            //        pointLabelStyle);
-            //}
+            List<GameObject>[] pointlists = { HamiltonPoints, FirstPoints, TriadPoints };
+
+            for (int j = 0; j < pointlists.Length; j++)
+            {
+                for (int i = 0; i < pointlists[j].Count; i++) // for each point in PointList
+                {
+                    var pointCoords = pointlists[j][i].transform.position;
+                    var screenPoint = mainCam.WorldToScreenPoint(pointCoords);
+                    var width = 50f;
+                    var height = 20f;
+                    // show the label
+                    GUI.Label(
+                        new Rect(screenPoint.x - width / 2,
+                        Screen.height - screenPoint.y, width, height),
+                        "[" + (pointCoords.x + 1) + ", " + (pointCoords.y + 1) + ", " + (pointCoords.z + 1) + "]",
+                        pointLabelStyle);
+                }
+            }
         }
     }
 
@@ -507,23 +511,40 @@ public class ASM : MonoBehaviour
         cameraXangle = defaultCameraAngleX;
         cameraYangle = defaultCameraAngleY;
         camDistance = defaultCamDistance;
-        //for (int i = 0; i < PointList.Count; i++)
-        //{
-        //    PointList[i].GetComponent<Renderer>().material.color = Color.black;
-        //}
     }
 
     IEnumerator AnimateLine()
     {
-        yield return new WaitForSeconds(0.1f);
-        //for (int i = 0; i < PointList.Count; i++)
-        //{
-        //    PointList[i].GetComponent<Renderer>().material.color = Color.black;
-        //}
-        //for (int i = 0; i < PointList.Count; i++)
-        //{
-        //    PointList[i].GetComponent<Renderer>().material.color = Color.yellow;
-        //    yield return new WaitForSeconds(0.1f);
-        //}
+        List<GameObject>[] linelists = { HamiltonLines, FirstLines, TriadLines };
+        List<GameObject>[] pointlists = { HamiltonPoints, FirstPoints, TriadPoints };
+        
+        //Debug.Log("hlines" + HamiltonLines.Count);
+        //Debug.Log("hpoints" + HamiltonPoints.Count);
+
+        //Debug.Log("first lines" + FirstLines.Count);
+        //Debug.Log("first points" + FirstPoints.Count);
+
+        //Debug.Log("triad lines" + TriadLines.Count);
+        //Debug.Log("triad points" + TriadPoints.Count);
+
+        for (int i = 0; i < linelists.Length; i++)
+        {
+            for (int j = 0; j < linelists[i].Count; j++)
+            {
+                if(j <= linelists[i].Count)
+                {
+                    linelists[i][j].GetComponentInChildren<Renderer>().material.color = Color.yellow;
+                }
+                if (j <= pointlists[i].Count)
+                {
+                    pointlists[i][j].GetComponentInChildren<Renderer>().material.color = Color.yellow;
+                }
+                yield return new WaitForSeconds(0.1f);
+            }
+            if(pointlists[i].Count > 1)
+            {
+                pointlists[i][pointlists[i].Count - 1].GetComponentInChildren<Renderer>().material.color = Color.yellow;
+            }
+        }
     }
 }
