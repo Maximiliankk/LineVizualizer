@@ -14,6 +14,10 @@ using UnityEngine;
 /// </summary>
 public class ASM : MonoBehaviour
 {
+    public AudioSource audioSource;
+    public List<AudioClip> audioClips;
+    int currentIndex = 0;
+
     List<GameObject> FirstPoints = new List<GameObject>();
     List<GameObject> FirstLines = new List<GameObject>();
 
@@ -564,7 +568,9 @@ public class ASM : MonoBehaviour
                 {
                     pointlists[i][j].GetComponentInChildren<Renderer>().material.color = Color.yellow;
                 }
-                yield return new WaitForSeconds(0.1f);
+                AudioSource.PlayClipAtPoint(audioClips[currentIndex],mainCam.transform.position);
+                NextSound();
+                yield return new WaitForSeconds(0.5f);
             }
             if(pointlists[i].Count > 1)
             {
@@ -572,4 +578,13 @@ public class ASM : MonoBehaviour
             }
         }
     }
+    void NextSound()
+    {
+        currentIndex++;
+        if(currentIndex >= audioClips.Count)
+        {
+            currentIndex = 0;
+        }
+    }
+
 }
