@@ -18,17 +18,20 @@ public class ASM : MonoBehaviour
     public List<AudioClip> audioClips;
     int currentIndex = 0;
 
-    List<GameObject> FirstPoints = new List<GameObject>();
-    List<GameObject> FirstLines = new List<GameObject>();
-
-    List<GameObject> HamiltonPoints = new List<GameObject>();
-    List<GameObject> HamiltonLines = new List<GameObject>();
-
-    List<GameObject> TriadPoints = new List<GameObject>();
-    List<GameObject> TriadLines = new List<GameObject>();
+    static List<GameObject> FirstPoints = new List<GameObject>();
+    static List<GameObject> FirstLines = new List<GameObject>();
+    static List<GameObject> HamiltonPoints = new List<GameObject>();
+    static List<GameObject> HamiltonLines = new List<GameObject>();
+    static List<GameObject> TriadPoints = new List<GameObject>();
+    static List<GameObject> TriadLines = new List<GameObject>();
+    static List<GameObject> E1Points = new List<GameObject>();
+    static List<GameObject> E1Lines = new List<GameObject>();
 
     List<GameObject> GridPoints = new List<GameObject>();
     List<GameObject> GridLines = new List<GameObject>();
+
+    List<GameObject>[] linelists = { HamiltonLines, FirstLines, TriadLines, E1Lines };
+    List<GameObject>[] pointlists = { HamiltonPoints, FirstPoints, TriadPoints, E1Points };
 
     public GameObject linePrefab;
     public GameObject pointPrefab;
@@ -55,6 +58,7 @@ public class ASM : MonoBehaviour
     public float gridLinesThickness = 0.05f;
     public float cameraZoomSpeed = 0.5f;
     Color currentColor = Color.black;
+    Coroutine CR_animatePath = null, CR_animateCamera = null;
 
     GUIStyle pointLabelStyle = new GUIStyle();
     GUIStyle menuLabelStyle = new GUIStyle();
@@ -67,6 +71,48 @@ public class ASM : MonoBehaviour
         menuLabelStyle.normal.textColor = Color.black;
         mainCam = Camera.main;
     }
+    void DrawE1()
+    {
+        //P0 = new Vector3(3, 4, 1); P1 = new Vector3(4, 4, 1);
+
+        //P0 = Vector3(2, 4, 2); P1 = Vector3(3, 4, 2);
+
+        //P0 = Vector3(3, 4, 2); P1 = Vector3(4, 4, 2);
+
+        //P0 = Vector3(1, 4, 3); P1 = Vector3(2, 4, 3);
+
+        //P0 = Vector3(2, 4, 3); P1 = Vector3(3, 4, 3);
+
+        //P0 = Vector3(3, 4, 3); P1 = Vector3(4, 4, 3);
+
+        //P0 = Vector3(1, 4, 4); P1 = Vector3(2, 4, 4);
+
+        //P0 = Vector3(2, 4, 4); P1 = Vector3(3, 4, 4);
+
+        //P0 = Vector3(3, 3, 2); P1 = Vector3(4, 3, 2);
+
+        //P0 = Vector3(2, 3, 3); P1 = Vector3(3, 3, 3);
+
+        //P0 = Vector3(3, 3, 3); P1 = Vector3(4, 3, 3);
+
+        //P0 = Vector3(1, 3, 4); P1 = Vector3(2, 3, 4);
+
+        //P0 = Vector3(2, 3, 4); P1 = Vector3(3, 3, 4);
+
+        //P0 = Vector3(3, 3, 4); P1 = Vector3(4, 3, 4);
+
+        //P0 = Vector3(3, 2, 3); P1 = Vector3(4, 2, 3);
+
+        //P0 = Vector3(2, 2, 4); P1 = Vector3(3, 2, 4);
+
+
+        //P0 = Vector3(3, 2, 4); P1 = Vector3(4, 2, 4);
+
+        //P0 = Vector3(3, 1, 4); P1 = Vector3(4, 1, 4);
+
+
+    }
+
     void DrawHamiltonCycle()
     {
         SetColor(Color.black); // color of this path
@@ -379,14 +425,22 @@ public class ASM : MonoBehaviour
             LeftUIypos += 20;
             if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Animate Camera"))
             {
-                StopAllCoroutines();
-                StartCoroutine(AnimateCamera());
+                //StopAllCoroutines();
+                if(CR_animateCamera != null)
+                {
+                    StopCoroutine(CR_animateCamera);
+                }
+                CR_animateCamera = StartCoroutine(AnimateCamera());
             }
             LeftUIypos += 20;
             if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Animate"))
             {
-                StopAllCoroutines();
-                StartCoroutine(AnimateLine());
+                //StopAllCoroutines();
+                if (CR_animatePath != null)
+                {
+                    StopCoroutine(CR_animatePath);
+                }
+                CR_animatePath = StartCoroutine(AnimateLine());
             }
             LeftUIypos += 20;
             LeftUIypos += 20;
@@ -423,6 +477,17 @@ public class ASM : MonoBehaviour
                 ClearBuffer(HamiltonPoints);
             }
             LeftUIypos += 20;
+            if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Draw E1 Set"))
+            {
+                StopAllCoroutines();
+                DrawE1();
+            }
+            if (GUI.Button(new Rect(10 + buttonWidths + 10, LeftUIypos, buttonWidths, 20), "Delete E1 Set"))
+            {
+                ClearBuffer(E1Lines);
+                ClearBuffer(E1Points);
+            }
+            LeftUIypos += 20;
             if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Draw 4x4 cube"))
             {
                 drawGridLines(4, 0.5f, new Color(1, 1, 1) * 0.7f);
@@ -445,8 +510,6 @@ public class ASM : MonoBehaviour
         }
         if (toggleLabels)
         {
-            List<GameObject>[] pointlists = { HamiltonPoints, FirstPoints, TriadPoints };
-
             for (int j = 0; j < pointlists.Length; j++)
             {
                 for (int i = 0; i < pointlists[j].Count; i++) // for each point in PointList
@@ -468,6 +531,10 @@ public class ASM : MonoBehaviour
 
     private void ResetCamera()
     {
+        if (CR_animateCamera != null)
+        {
+            StopCoroutine(CR_animateCamera);
+        }
         cameraXangle = defaultCameraAngleX;
         cameraYangle = defaultCameraAngleY;
         camDistance = defaultCamDistance;
@@ -508,17 +575,6 @@ public class ASM : MonoBehaviour
 
     IEnumerator AnimateLine()
     {
-        List<GameObject>[] linelists = { HamiltonLines, FirstLines, TriadLines };
-        List<GameObject>[] pointlists = { HamiltonPoints, FirstPoints, TriadPoints };
-
-        //Debug.Log("hlines" + HamiltonLines.Count);
-        //Debug.Log("hpoints" + HamiltonPoints.Count);
-
-        //Debug.Log("first lines" + FirstLines.Count);
-        //Debug.Log("first points" + FirstPoints.Count);
-
-        //Debug.Log("triad lines" + TriadLines.Count);
-        //Debug.Log("triad points" + TriadPoints.Count);
         for (int i = 0; i < linelists.Length; i++)
         {
             for (int j = 0; j < linelists[i].Count; j++)
@@ -537,7 +593,6 @@ public class ASM : MonoBehaviour
                 pointlists[i][pointlists[i].Count - 1].GetComponentInChildren<Renderer>().material.color = Color.black;
             }
         }
-
         for (int i = 0; i < linelists.Length; i++)
         {
             for (int j = 0; j < linelists[i].Count; j++)
