@@ -469,11 +469,21 @@ public class ASM : MonoBehaviour
                 ClearBuffer(HamiltonPoints);
             }
             LeftUIypos += 20;
+            if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Draw 4x4 cube"))
+            {
+                drawGridLines(4, 0.5f, new Color(1, 1, 1) * 0.7f);
+            }
+            LeftUIypos += 20;
+            if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Draw 5x5 cube"))
+            {
+                drawGridLines(5, 0.5f, new Color(1, 1, 1) * 0.7f);
+            }
+            LeftUIypos += 20;
             if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Draw 6x6 cube"))
             {
                 drawGridLines(6, 0.5f, new Color(1, 1, 1) * 0.7f);
             }
-            if (GUI.Button(new Rect(10 + buttonWidths + 10, LeftUIypos, buttonWidths, 20), "Delete 6x6 cube"))
+            if (GUI.Button(new Rect(10 + buttonWidths + 10, LeftUIypos, buttonWidths, 20), "Delete Grids"))
             {
                 ClearBuffer(GridLines);
                 ClearBuffer(GridPoints);
