@@ -27,6 +27,15 @@ public class ASM : MonoBehaviour
     static List<GameObject> E1Points = new List<GameObject>();
     static List<GameObject> E1Lines = new List<GameObject>();
 
+    static List<GameObject> E2Points = new List<GameObject>();
+    static List<GameObject> E2Lines = new List<GameObject>();
+
+    static List<GameObject> E3Points = new List<GameObject>();
+    static List<GameObject> E3Lines = new List<GameObject>();
+
+    static List<GameObject> E4Points = new List<GameObject>();
+    static List<GameObject> E4Lines = new List<GameObject>();
+
     List<GameObject> GridPoints = new List<GameObject>();
     List<GameObject> GridLines = new List<GameObject>();
 
@@ -74,41 +83,41 @@ public class ASM : MonoBehaviour
     void DrawE1()
     {
         var P0 = new Vector3(3, 4, 1); var P1 = new Vector3(4, 4, 1);
-        AddLine(P0,P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0,P1, 0.2f, Color.black, E1Lines);
         P0 = new Vector3(2, 4, 2); P1 = new Vector3(3, 4, 2);
-        AddLine(P0, P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, E1Lines);
         P0 = new Vector3(3, 4, 2); P1 = new Vector3(4, 4, 2);
-        AddLine(P0, P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, E1Lines);
         P0 = new Vector3(1, 4, 3); P1 = new Vector3(2, 4, 3);
-        AddLine(P0, P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, E1Lines);
         P0 = new Vector3(2, 4, 3); P1 = new Vector3(3, 4, 3);
-        AddLine(P0, P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, E1Lines);
         P0 = new Vector3(3, 4, 3); P1 = new Vector3(4, 4, 3);
-        AddLine(P0, P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, E1Lines);
         P0 = new Vector3(1, 4, 4); P1 = new Vector3(2, 4, 4);
-        AddLine(P0, P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, E1Lines);
         P0 = new Vector3(2, 4, 4); P1 = new Vector3(3, 4, 4);
-        AddLine(P0, P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, E1Lines);
         P0 = new Vector3(3, 3, 2); P1 = new Vector3(4, 3, 2);
-        AddLine(P0, P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, E1Lines);
         P0 = new Vector3(2, 3, 3); P1 = new Vector3(3, 3, 3);
-        AddLine(P0, P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, E1Lines);
         P0 = new Vector3(3, 3, 3); P1 = new Vector3(4, 3, 3);
-        AddLine(P0, P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, E1Lines);
         P0 = new Vector3(1, 3, 4); P1 = new Vector3(2, 3, 4);
-        AddLine(P0, P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, E1Lines);
         P0 = new Vector3(2, 3, 4); P1 = new Vector3(3, 3, 4);
-        AddLine(P0, P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, E1Lines);
         P0 = new Vector3(3, 3, 4); P1 = new Vector3(4, 3, 4);
-        AddLine(P0, P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, E1Lines);
         P0 = new Vector3(3, 2, 3); P1 = new Vector3(4, 2, 3);
-        AddLine(P0, P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, E1Lines);
         P0 = new Vector3(2, 2, 4); P1 = new Vector3(3, 2, 4);
-        AddLine(P0, P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, E1Lines);
         P0 = new Vector3(3, 2, 4); P1 = new Vector3(4, 2, 4);
-        AddLine(P0, P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, E1Lines);
         P0 = new Vector3(3, 1, 4); P1 = new Vector3(4, 1, 4);
-        AddLine(P0, P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, E1Lines);
     }
 
     void DrawHamiltonCycle()
@@ -376,7 +385,22 @@ public class ASM : MonoBehaviour
         go.transform.localScale = new Vector3(go.transform.localScale.x * linewidth, go.transform.localScale.y * linewidth, Vector3.Distance(p1, p2));
         go.transform.GetComponentInChildren<Renderer>().material.color = lineColor;
         go.transform.LookAt(p2);
-        if(buffer != null)
+        if (buffer != null)
+        {
+            buffer.Add(go);
+        }
+    }
+
+    // creates a cylinder in the scene connecting p1 to p2
+    public void AddEdgeLine(Vector3 p1, Vector3 p2, float linewidth = defaultLineWidth, Color lineColor = default(Color), List<GameObject> buffer = null)
+    {
+        var go = Instantiate(linePrefab);
+        go.transform.position = p1;
+        go.transform.localScale = new Vector3(go.transform.localScale.x * linewidth, go.transform.localScale.y * linewidth, Vector3.Distance(p1, p2));
+        go.transform.GetComponentInChildren<Renderer>().material.color = lineColor;
+        go.transform.LookAt(p2);
+        go.transform.position -= new Vector3(1, 1, 1);
+        if (buffer != null)
         {
             buffer.Add(go);
         }
