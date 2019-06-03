@@ -18,29 +18,20 @@ public class ASM : MonoBehaviour
     public List<AudioClip> audioClips;
     int currentIndex = 0;
 
-    static List<GameObject> FirstPoints = new List<GameObject>();
-    static List<GameObject> FirstLines = new List<GameObject>();
+    static List<GameObject> SeventhChordPoints = new List<GameObject>();
+    static List<GameObject> SeventhChordLines = new List<GameObject>();
     static List<GameObject> HamiltonPoints = new List<GameObject>();
     static List<GameObject> HamiltonLines = new List<GameObject>();
     static List<GameObject> TriadPoints = new List<GameObject>();
     static List<GameObject> TriadLines = new List<GameObject>();
-    static List<GameObject> E1Points = new List<GameObject>();
-    static List<GameObject> E1Lines = new List<GameObject>();
 
-    static List<GameObject> E2Points = new List<GameObject>();
-    static List<GameObject> E2Lines = new List<GameObject>();
-
-    static List<GameObject> E3Points = new List<GameObject>();
-    static List<GameObject> E3Lines = new List<GameObject>();
-
-    static List<GameObject> E4Points = new List<GameObject>();
-    static List<GameObject> E4Lines = new List<GameObject>();
+    static List<GameObject> EdgeLines = new List<GameObject>();
 
     List<GameObject> GridPoints = new List<GameObject>();
     List<GameObject> GridLines = new List<GameObject>();
 
-    List<GameObject>[] linelists = { HamiltonLines, FirstLines, TriadLines, E1Lines };
-    List<GameObject>[] pointlists = { HamiltonPoints, FirstPoints, TriadPoints, E1Points };
+    List<GameObject>[] linelists = { HamiltonLines, SeventhChordLines, TriadLines, EdgeLines };
+    List<GameObject>[] pointlists = { HamiltonPoints, SeventhChordPoints, TriadPoints };
 
     public GameObject linePrefab;
     public GameObject pointPrefab;
@@ -80,44 +71,124 @@ public class ASM : MonoBehaviour
         menuLabelStyle.normal.textColor = Color.black;
         mainCam = Camera.main;
     }
-    void DrawE1()
+    void DrawE1(bool flipXZ)
     {
         var P0 = new Vector3(3, 4, 1); var P1 = new Vector3(4, 4, 1);
-        AddEdgeLine(P0,P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
         P0 = new Vector3(2, 4, 2); P1 = new Vector3(3, 4, 2);
-        AddEdgeLine(P0, P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
         P0 = new Vector3(3, 4, 2); P1 = new Vector3(4, 4, 2);
-        AddEdgeLine(P0, P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
         P0 = new Vector3(1, 4, 3); P1 = new Vector3(2, 4, 3);
-        AddEdgeLine(P0, P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
         P0 = new Vector3(2, 4, 3); P1 = new Vector3(3, 4, 3);
-        AddEdgeLine(P0, P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
         P0 = new Vector3(3, 4, 3); P1 = new Vector3(4, 4, 3);
-        AddEdgeLine(P0, P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
         P0 = new Vector3(1, 4, 4); P1 = new Vector3(2, 4, 4);
-        AddEdgeLine(P0, P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
         P0 = new Vector3(2, 4, 4); P1 = new Vector3(3, 4, 4);
-        AddEdgeLine(P0, P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
         P0 = new Vector3(3, 3, 2); P1 = new Vector3(4, 3, 2);
-        AddEdgeLine(P0, P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
         P0 = new Vector3(2, 3, 3); P1 = new Vector3(3, 3, 3);
-        AddEdgeLine(P0, P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
         P0 = new Vector3(3, 3, 3); P1 = new Vector3(4, 3, 3);
-        AddEdgeLine(P0, P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
         P0 = new Vector3(1, 3, 4); P1 = new Vector3(2, 3, 4);
-        AddEdgeLine(P0, P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
         P0 = new Vector3(2, 3, 4); P1 = new Vector3(3, 3, 4);
-        AddEdgeLine(P0, P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
         P0 = new Vector3(3, 3, 4); P1 = new Vector3(4, 3, 4);
-        AddEdgeLine(P0, P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
         P0 = new Vector3(3, 2, 3); P1 = new Vector3(4, 2, 3);
-        AddEdgeLine(P0, P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
         P0 = new Vector3(2, 2, 4); P1 = new Vector3(3, 2, 4);
-        AddEdgeLine(P0, P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
         P0 = new Vector3(3, 2, 4); P1 = new Vector3(4, 2, 4);
-        AddEdgeLine(P0, P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
         P0 = new Vector3(3, 1, 4); P1 = new Vector3(4, 1, 4);
-        AddEdgeLine(P0, P1, 0.2f, Color.black, E1Lines);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+    }
+
+    void DrawE3(bool flipXZ)
+    {
+        var P0 = new Vector3(3, 4, 1); var P1 = new Vector3(4, 3, 1);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+        P0 = new Vector3(3, 4, 2); P1 = new Vector3(4, 3, 2);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+        P0 = new Vector3(3, 4, 3); P1 = new Vector3(4, 3, 3);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+        P0 = new Vector3(3, 4, 4); P1 = new Vector3(4, 3, 4);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+        P0 = new Vector3(2, 4, 2); P1 = new Vector3(3, 3, 2);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+        P0 = new Vector3(2, 4, 3); P1 = new Vector3(3, 3, 3);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+        P0 = new Vector3(2, 4, 4); P1 = new Vector3(3, 3, 4);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+        P0 = new Vector3(1, 4, 3); P1 = new Vector3(2, 3, 3);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+        P0 = new Vector3(1, 4, 4); P1 = new Vector3(2, 3, 4);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+        P0 = new Vector3(3, 3, 2); P1 = new Vector3(4, 2, 2);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+        P0 = new Vector3(3, 3, 3); P1 = new Vector3(4, 2, 3);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+        P0 = new Vector3(3, 3, 4); P1 = new Vector3(4, 2, 4);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+        P0 = new Vector3(2, 3, 3); P1 = new Vector3(3, 2, 3);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+        P0 = new Vector3(2, 3, 4); P1 = new Vector3(3, 2, 4);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+        P0 = new Vector3(1, 3, 4); P1 = new Vector3(2, 2, 4);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+        P0 = new Vector3(3, 2, 3); P1 = new Vector3(4, 1, 3);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+        P0 = new Vector3(3, 2, 4); P1 = new Vector3(4, 1, 4);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+        P0 = new Vector3(2, 2, 4); P1 = new Vector3(3, 1, 4);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+    }
+
+    void DrawE5(bool flipXZ)
+    {
+        var P0 = new Vector3(6, 3, 3); var P1 = new Vector3(5, 4, 3);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+        P0 = new Vector3(5, 4, 3); P1 = new Vector3(5, 3, 4);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+        P0 = new Vector3(5, 3, 4); P1 = new Vector3(6, 3, 3);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+        P0 = new Vector3(5, 4, 3); P1 = new Vector3(4, 5, 3);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+        P0 = new Vector3(4, 5, 3); P1 = new Vector3(4, 4, 4);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+        P0 = new Vector3(4, 4, 4); P1 = new Vector3(5, 4, 3);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+        P0 = new Vector3(4, 5, 3); P1 = new Vector3(3, 6, 3);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+        P0 = new Vector3(3, 6, 3); P1 = new Vector3(3, 5, 4);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+        P0 = new Vector3(3, 5, 4); P1 = new Vector3(4, 5, 3);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+        P0 = new Vector3(5, 3, 4); P1 = new Vector3(4, 4, 4);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+        P0 = new Vector3(4, 4, 4); P1 = new Vector3(4, 3, 5);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+        P0 = new Vector3(4, 3, 5); P1 = new Vector3(5, 3, 4);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+        P0 = new Vector3(4, 4, 4); P1 = new Vector3(3, 5, 4);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+        P0 = new Vector3(3, 5, 4); P1 = new Vector3(3, 4, 5);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+        P0 = new Vector3(3, 4, 5); P1 = new Vector3(4, 4, 4);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+        P0 = new Vector3(4, 3, 5); P1 = new Vector3(3, 4, 5);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+        P0 = new Vector3(3, 4, 5); P1 = new Vector3(3, 3, 6);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
+        P0 = new Vector3(3, 3, 6); P1 = new Vector3(4, 3, 5);
+        AddEdgeLine(P0, P1, 0.2f, Color.black, EdgeLines, flipXZ);
     }
 
     void DrawHamiltonCycle()
@@ -168,37 +239,37 @@ public class ASM : MonoBehaviour
     void DrawSeventhChords()
     {
         SetColor(Color.black); // color of this path
-        CreatePoint(4, 3, 1, FirstPoints);
-        CreatePoint(4, 2, 2, FirstPoints);
-        CreatePoint(4, 1, 3, FirstPoints);
-        CreatePoint(4, 1, 4, FirstPoints);
-        CreatePoint(3, 1, 4, FirstPoints);
-        CreatePoint(2, 2, 4, FirstPoints);
-        CreatePoint(1, 3, 4, FirstPoints);
-        CreatePoint(2, 3, 4, FirstPoints);
-        CreatePoint(3, 2, 4, FirstPoints);
-        CreatePoint(4, 2, 4, FirstPoints);
-        CreatePoint(4, 2, 3, FirstPoints);
-        CreatePoint(3, 2, 3, FirstPoints);
-        CreatePoint(2, 3, 3, FirstPoints);
-        CreatePoint(3, 3, 3, FirstPoints);
-        CreatePoint(3, 3, 4, FirstPoints);
-        CreatePoint(4, 3, 4, FirstPoints);
-        CreatePoint(4, 3, 3, FirstPoints);
-        CreatePoint(4, 3, 2, FirstPoints);
-        CreatePoint(3, 3, 2, FirstPoints);
-        CreatePoint(2, 4, 2, FirstPoints);
-        CreatePoint(2, 4, 3, FirstPoints);
-        CreatePoint(1, 4, 3, FirstPoints);
-        CreatePoint(1, 4, 4, FirstPoints);
-        CreatePoint(2, 4, 4, FirstPoints);
-        CreatePoint(3, 4, 4, FirstPoints);
-        CreatePoint(3, 4, 3, FirstPoints);
-        CreatePoint(4, 4, 3, FirstPoints);
-        CreatePoint(4, 4, 2, FirstPoints);
-        CreatePoint(3, 4, 2, FirstPoints);
-        CreatePoint(3, 4, 1, FirstPoints);
-        CreatePoint(4, 4, 1, FirstPoints);
+        CreatePoint(4, 3, 1, SeventhChordPoints);
+        CreatePoint(4, 2, 2, SeventhChordPoints);
+        CreatePoint(4, 1, 3, SeventhChordPoints);
+        CreatePoint(4, 1, 4, SeventhChordPoints);
+        CreatePoint(3, 1, 4, SeventhChordPoints);
+        CreatePoint(2, 2, 4, SeventhChordPoints);
+        CreatePoint(1, 3, 4, SeventhChordPoints);
+        CreatePoint(2, 3, 4, SeventhChordPoints);
+        CreatePoint(3, 2, 4, SeventhChordPoints);
+        CreatePoint(4, 2, 4, SeventhChordPoints);
+        CreatePoint(4, 2, 3, SeventhChordPoints);
+        CreatePoint(3, 2, 3, SeventhChordPoints);
+        CreatePoint(2, 3, 3, SeventhChordPoints);
+        CreatePoint(3, 3, 3, SeventhChordPoints);
+        CreatePoint(3, 3, 4, SeventhChordPoints);
+        CreatePoint(4, 3, 4, SeventhChordPoints);
+        CreatePoint(4, 3, 3, SeventhChordPoints);
+        CreatePoint(4, 3, 2, SeventhChordPoints);
+        CreatePoint(3, 3, 2, SeventhChordPoints);
+        CreatePoint(2, 4, 2, SeventhChordPoints);
+        CreatePoint(2, 4, 3, SeventhChordPoints);
+        CreatePoint(1, 4, 3, SeventhChordPoints);
+        CreatePoint(1, 4, 4, SeventhChordPoints);
+        CreatePoint(2, 4, 4, SeventhChordPoints);
+        CreatePoint(3, 4, 4, SeventhChordPoints);
+        CreatePoint(3, 4, 3, SeventhChordPoints);
+        CreatePoint(4, 4, 3, SeventhChordPoints);
+        CreatePoint(4, 4, 2, SeventhChordPoints);
+        CreatePoint(3, 4, 2, SeventhChordPoints);
+        CreatePoint(3, 4, 1, SeventhChordPoints);
+        CreatePoint(4, 4, 1, SeventhChordPoints);
     }
     void DrawTriadSet()
     {
@@ -401,8 +472,17 @@ public class ASM : MonoBehaviour
     }
 
     // creates a cylinder in the scene connecting p1 to p2
-    public void AddEdgeLine(Vector3 p1, Vector3 p2, float linewidth = defaultLineWidth, Color lineColor = default(Color), List<GameObject> buffer = null)
+    public void AddEdgeLine(Vector3 p1, Vector3 p2, float linewidth, Color lineColor, List<GameObject> buffer, bool flipXZ = false)
     {
+        if(flipXZ)
+        {
+            var temp = p1.x;
+            p1.x = p1.z;
+            p1.z = temp;
+            temp = p2.x;
+            p2.x = p2.z;
+            p2.z = temp;
+        }
         var go = Instantiate(linePrefab);
         go.transform.position = p1;
         go.transform.localScale = new Vector3(go.transform.localScale.x * linewidth, go.transform.localScale.y * linewidth, Vector3.Distance(p1, p2));
@@ -473,15 +553,15 @@ public class ASM : MonoBehaviour
             }
             LeftUIypos += 20;
             LeftUIypos += 20;
-            if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Draw First Path"))
+            if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Draw Seventh Chords"))
             {
                 StopAllCoroutines();
                 DrawSeventhChords();
             }
-            if (GUI.Button(new Rect(10 + buttonWidths + 10, LeftUIypos, buttonWidths, 20), "Delete First Path"))
+            if (GUI.Button(new Rect(10 + buttonWidths + 10, LeftUIypos, buttonWidths, 20), "Delete Seventh Chords"))
             {
-                ClearBuffer(FirstLines);
-                ClearBuffer(FirstPoints);
+                ClearBuffer(SeventhChordLines);
+                ClearBuffer(SeventhChordPoints);
             }
             LeftUIypos += 20;
             if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Draw Triad Set"))
@@ -509,12 +589,35 @@ public class ASM : MonoBehaviour
             if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Draw E1 Set"))
             {
                 StopAllCoroutines();
-                DrawE1();
+                DrawE1(false);
             }
-            if (GUI.Button(new Rect(10 + buttonWidths + 10, LeftUIypos, buttonWidths, 20), "Delete E1 Set"))
+            LeftUIypos += 20;
+            if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Draw E2 Set"))
             {
-                ClearBuffer(E1Lines);
-                ClearBuffer(E1Points);
+                StopAllCoroutines();
+                DrawE1(true);
+            }
+            LeftUIypos += 20;
+            if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Draw E3 Set"))
+            {
+                StopAllCoroutines();
+                DrawE3(false);
+            }
+            LeftUIypos += 20;
+            if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Draw E4 Set"))
+            {
+                StopAllCoroutines();
+                DrawE3(true);
+            }
+            LeftUIypos += 20;
+            if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Draw E5 Set"))
+            {
+                StopAllCoroutines();
+                DrawE5(false);
+            }
+            if (GUI.Button(new Rect(10 + buttonWidths + 10, LeftUIypos, buttonWidths, 20), "Delete edge sets"))
+            {
+                ClearBuffer(EdgeLines);
             }
             LeftUIypos += 20;
             if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Draw 4x4 cube"))
@@ -560,10 +663,11 @@ public class ASM : MonoBehaviour
 
     private void ResetCamera()
     {
-        if (CR_animateCamera != null)
-        {
-            StopCoroutine(CR_animateCamera);
-        }
+        StopAllCoroutines();
+        //if (CR_animateCamera != null)
+        //{
+        //    StopCoroutine(CR_animateCamera);
+        //}
         cameraXangle = defaultCameraAngleX;
         cameraYangle = defaultCameraAngleY;
         camDistance = defaultCamDistance;
