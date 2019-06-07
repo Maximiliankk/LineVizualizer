@@ -760,14 +760,25 @@ public class ASM : MonoBehaviour
 
     IEnumerator AnimateLine()
     {
-        for (int i = 0; i < linelists.Length; i++)
+        //List<GameObject>[] linelists = { HamiltonLines, SeventhChordLines, TriadLines, EdgeLines };
+        //List<GameObject>[] pointlists = { HamiltonPoints, SeventhChordPoints, TriadPoints };
+
+        // set all lines to black
+        for (int i = 0; i < linelists.Length; i++) // foreach list in linelists
         {
-            for (int j = 0; j < linelists[i].Count; j++)
+            for (int j = 0; j < linelists[i].Count; j++) // foreach line in linelists[i]
             {
                 if (j <= linelists[i].Count)
                 {
                     linelists[i][j].GetComponentInChildren<Renderer>().material.color = Color.black;
                 }
+            }
+        }
+        // set all points to black
+        for (int i = 0; i < pointlists.Length; i++) // foreach list in linelists
+        {
+            for (int j = 0; j < pointlists[i].Count; j++) // foreach line in linelists[i]
+            {
                 if (j <= pointlists[i].Count)
                 {
                     pointlists[i][j].GetComponentInChildren<Renderer>().material.color = Color.black;
@@ -778,15 +789,19 @@ public class ASM : MonoBehaviour
                 pointlists[i][pointlists[i].Count - 1].GetComponentInChildren<Renderer>().material.color = Color.black;
             }
         }
-        for (int i = 0; i < linelists.Length; i++)
+
+        int greaterLength = linelists.Length < pointlists.Length ? pointlists.Length : linelists.Length;
+        var primary = linelists.Length < pointlists.Length ? pointlists : linelists;
+        for (int i = 0; i < greaterLength; i++)
         {
-            for (int j = 0; j < linelists[i].Count; j++)
+            int greaterLength2 = GetMaxCount(i);
+            for (int j = 0; j < greaterLength2; j++) // each point and line
             {
-                if(j <= linelists[i].Count)
+                if(i < linelists.Length && j < linelists[i].Count)
                 {
                     linelists[i][j].GetComponentInChildren<Renderer>().material.color = Color.yellow;
                 }
-                if (j <= pointlists[i].Count)
+                if (i < pointlists.Length && j < pointlists[i].Count)
                 {
                     pointlists[i][j].GetComponentInChildren<Renderer>().material.color = Color.yellow;
                 }
@@ -794,13 +809,38 @@ public class ASM : MonoBehaviour
                 NextSound();
                 yield return new WaitForSeconds(0.5f);
             }
-            if(pointlists[i].Count > 1)
+            if(i < pointlists.Length && pointlists[i].Count > 1)
             {
                 pointlists[i][pointlists[i].Count - 1].GetComponentInChildren<Renderer>().material.color = Color.yellow;
                 AudioSource.PlayClipAtPoint(audioClips[currentIndex], mainCam.transform.position);
-                NextSound();
             }
+            NextSound();
         }
+    }
+    int GetMaxCount(int i)
+    {
+        bool linesGood = false, pointsGood = false;
+        if (i < linelists.Length)
+        {
+            linesGood = true;
+        }
+        if (i < pointlists.Length)
+        {
+            pointsGood = true;
+        }
+        if (pointsGood == false && linesGood)
+        {
+            return linelists[i].Count;
+        }
+        else if (pointsGood && linesGood == false)
+        {
+            return pointlists[i].Count;
+        }
+        else if (pointsGood && linesGood)
+        {
+            return pointlists[i].Count > linelists[i].Count ? pointlists[i].Count : linelists[i].Count;
+        }
+        return 0;
     }
     void NextSound()
     {
