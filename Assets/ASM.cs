@@ -78,7 +78,7 @@ public class ASM : MonoBehaviour
         float[] samples = new float[pianoLib.samples * pianoLib.channels];
         pianoLib.GetData(samples, 0);
 
-        int numNotes = 80;
+        int numNotes = 88;
         notes = new AudioClip[numNotes];
         int samplesPerNote = samples.Length / numNotes;
         float[] tempSamples = new float[samplesPerNote];
