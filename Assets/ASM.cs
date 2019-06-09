@@ -15,7 +15,8 @@ using UnityEngine;
 public class ASM : MonoBehaviour
 {
     public AudioSource audioSource;
-    public List<AudioClip> audioClips;
+    public AudioClip pianoLib;
+    private AudioClip [] notes;
     int currentIndex = 0;
 
     static List<GameObject> SeventhChordPoints = new List<GameObject>();
@@ -73,6 +74,25 @@ public class ASM : MonoBehaviour
         axesStyle.fontSize = 20;
         menuLabelStyle.normal.textColor = Color.black;
         mainCam = Camera.main;
+
+        float[] samples = new float[pianoLib.samples * pianoLib.channels];
+        pianoLib.GetData(samples, 0);
+
+        int numNotes = 80;
+        notes = new AudioClip[numNotes];
+        int samplesPerNote = samples.Length / numNotes;
+        float[] tempSamples = new float[samplesPerNote];
+        for (int i = 0; i < numNotes; ++i) // for each note
+        {
+            for (int j = 0; j < samplesPerNote; ++j) // get the samples and put them into notes array
+            {
+                tempSamples[j] = samples[i * samplesPerNote + j];
+            }
+            notes[i] = AudioClip.Create("note" + i.ToString(), samplesPerNote, pianoLib.channels, pianoLib.frequency, false);
+            notes[i].SetData(tempSamples, 0);
+        }
+
+        //AudioSource.PlayClipAtPoint(pianoLib, mainCam.transform.position);
     }
     void DrawE1(bool flipXZ)
     {
@@ -805,14 +825,14 @@ public class ASM : MonoBehaviour
                 {
                     pointlists[i][j].GetComponentInChildren<Renderer>().material.color = Color.yellow;
                 }
-                AudioSource.PlayClipAtPoint(audioClips[currentIndex],mainCam.transform.position);
+                AudioSource.PlayClipAtPoint(notes[currentIndex],mainCam.transform.position);
                 NextSound();
                 yield return new WaitForSeconds(0.5f);
             }
             if(i < pointlists.Length && pointlists[i].Count > 1)
             {
                 pointlists[i][pointlists[i].Count - 1].GetComponentInChildren<Renderer>().material.color = Color.yellow;
-                AudioSource.PlayClipAtPoint(audioClips[currentIndex], mainCam.transform.position);
+                AudioSource.PlayClipAtPoint(notes[currentIndex], mainCam.transform.position);
             }
             NextSound();
         }
@@ -845,7 +865,7 @@ public class ASM : MonoBehaviour
     void NextSound()
     {
         currentIndex++;
-        if(currentIndex >= audioClips.Count)
+        if(currentIndex >= notes.Length)
         {
             currentIndex = 0;
         }
