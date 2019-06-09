@@ -352,10 +352,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 370856892}
-  audioClips:
-  - {fileID: 8300000, guid: 1abed9d85deeb6b4e9725112e71b44cf, type: 3}
-  - {fileID: 8300000, guid: 87a2651017c9dd3439937a31dc1c4c8f, type: 3}
-  - {fileID: 8300000, guid: 2ba78b3d2dccb0f4890f903935ad82d6, type: 3}
+  pianoLib: {fileID: 8300000, guid: b0be2cda8983df94aabc9ea8cba72c52, type: 3}
   linePrefab: {fileID: 1332971749053832, guid: 09c7d37364822468d91efc5e615cb4a8, type: 2}
   pointPrefab: {fileID: 1871842891526818, guid: ad97a6cb8f26dbf47970ef9b4d4360a7,
     type: 2}
