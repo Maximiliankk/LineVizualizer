@@ -91,8 +91,6 @@ public class ASM : MonoBehaviour
             notes[i] = AudioClip.Create("note" + i.ToString(), samplesPerNote, pianoLib.channels, pianoLib.frequency, false);
             notes[i].SetData(tempSamples, 0);
         }
-
-        //AudioSource.PlayClipAtPoint(pianoLib, mainCam.transform.position);
     }
     void DrawE1(bool flipXZ)
     {
