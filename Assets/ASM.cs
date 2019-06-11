@@ -711,6 +711,14 @@ public class ASM : MonoBehaviour
                 ClearBuffer(GridPoints);
             }
             LeftUIypos += 20;
+            if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Play Selected"))
+            {
+                var chordIndex = selectedPoint.transform.position;
+                AudioSource.PlayClipAtPoint(notes[30 + (int)chordIndex.x], mainCam.transform.position);
+                AudioSource.PlayClipAtPoint(notes[30 + (int)chordIndex.x + (int)chordIndex.y], mainCam.transform.position);
+                AudioSource.PlayClipAtPoint(notes[30 + (int)chordIndex.x + (int)chordIndex.y + (int)chordIndex.z], mainCam.transform.position);
+            }
+            LeftUIypos += 20;
             string selectedPointText = "(none selected)";
             if (selectedPoint != null)
             {
