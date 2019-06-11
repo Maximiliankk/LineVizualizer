@@ -16,7 +16,7 @@ public class ASM : MonoBehaviour
 {
     public AudioSource audioSource;
     public AudioClip pianoLib;
-    private AudioClip [] notes;
+    private AudioClip[] notes;
     int currentIndex = 0;
 
     static List<GameObject> SeventhChordPoints = new List<GameObject>();
@@ -26,12 +26,13 @@ public class ASM : MonoBehaviour
     static List<GameObject> TriadPoints = new List<GameObject>();
     static List<GameObject> TriadLines = new List<GameObject>();
 
+    static List<GameObject> CustomLines = new List<GameObject>(); // made by selecting two points
     static List<GameObject> EdgeLines = new List<GameObject>();
 
     List<GameObject> GridPoints = new List<GameObject>();
     List<GameObject> GridLines = new List<GameObject>();
 
-    List<GameObject>[] linelists = { HamiltonLines, SeventhChordLines, TriadLines, EdgeLines };
+    List<GameObject>[] linelists = { HamiltonLines, SeventhChordLines, TriadLines, EdgeLines, CustomLines };
     List<GameObject>[] pointlists = { HamiltonPoints, SeventhChordPoints, TriadPoints };
 
     public GameObject linePrefab;
@@ -58,7 +59,7 @@ public class ASM : MonoBehaviour
     private bool toggleLabels = true;
     public float cameraRotateSpeed = 0.001f;
     public float cameraAnimateSpeed = 10f;
-    public float cameraAnimateSlowdownRatio = 0.5f; 
+    public float cameraAnimateSlowdownRatio = 0.5f;
     public float cameraAnimateSlowdownDistance = 10f;
     public float cameraAnimateSnapDistance = 1f;
     private float gridLinesThickness = 0.15f;
@@ -68,6 +69,7 @@ public class ASM : MonoBehaviour
     GUIStyle pointLabelStyle = new GUIStyle();
     GUIStyle axesStyle = new GUIStyle();
     GUIStyle menuLabelStyle = new GUIStyle();
+    GUIStyle selectedPointLabelStyle = new GUIStyle();
 
     // Use this for initialization
     void Start()
@@ -82,6 +84,7 @@ public class ASM : MonoBehaviour
         axesStyle.normal.textColor = Color.black;
         menuLabelStyle.normal.textColor = Color.black;
         axesStyle.fontSize = 20;
+        selectedPointLabelStyle.fontSize = 30;
     }
     void InitializeCamera()
     {
@@ -190,7 +193,7 @@ public class ASM : MonoBehaviour
 
     void DrawE5(bool flipXZ)
     {
-	var c = Color.black;
+        var c = Color.black;
         var P0 = new Vector3(6, 3, 3); var P1 = new Vector3(5, 4, 3);
         AddEdgeLine(P0, P1, 0.2f, c, EdgeLines, flipXZ);
         P0 = new Vector3(5, 4, 3); P1 = new Vector3(5, 3, 4);
@@ -277,67 +280,69 @@ public class ASM : MonoBehaviour
     void DrawSeventhChords()
     {
         SetColor(Color.black); // color of this set
-	// [x,y,z] for seventh chord is 1<=x,y,z<=4 and 8<=x+y+z<=11
+                               // [x,y,z] for seventh chord is 1<=x,y,z<=4 and 8<=x+y+z<=11
         for (int i = 1; i < 5; i++)
         {
             for (int j = 1; j < 5; j++)
             {
                 for (int k = 1; k < 5; k++)
                 {
-		    if (i+j+k< 12 && i+j+k>7) { 
-        		CreatePoint(i, j, k, SeventhChordPoints);
-		    }
-		}
-	    }
-	}
-//        CreatePoint(4, 3, 1, SeventhChordPoints);
-//        CreatePoint(4, 2, 2, SeventhChordPoints);
-//        CreatePoint(4, 1, 3, SeventhChordPoints);
-//        CreatePoint(4, 1, 4, SeventhChordPoints);
-//        CreatePoint(3, 1, 4, SeventhChordPoints);
-//        CreatePoint(2, 2, 4, SeventhChordPoints);
-//        CreatePoint(1, 3, 4, SeventhChordPoints);
-//        CreatePoint(2, 3, 4, SeventhChordPoints);
-//        CreatePoint(3, 2, 4, SeventhChordPoints);
-//        CreatePoint(4, 2, 4, SeventhChordPoints);
-//        CreatePoint(4, 2, 3, SeventhChordPoints);
-//        CreatePoint(3, 2, 3, SeventhChordPoints);
-//        CreatePoint(2, 3, 3, SeventhChordPoints);
-//        CreatePoint(3, 3, 3, SeventhChordPoints);
-//        CreatePoint(3, 3, 4, SeventhChordPoints);
-//        CreatePoint(4, 3, 4, SeventhChordPoints);
-//        CreatePoint(4, 3, 3, SeventhChordPoints);
-//        CreatePoint(4, 3, 2, SeventhChordPoints);
-//        CreatePoint(3, 3, 2, SeventhChordPoints);
-//        CreatePoint(2, 4, 2, SeventhChordPoints);
-//        CreatePoint(2, 4, 3, SeventhChordPoints);
-//        CreatePoint(1, 4, 3, SeventhChordPoints);
-//        CreatePoint(1, 4, 4, SeventhChordPoints);
-//        CreatePoint(2, 4, 4, SeventhChordPoints);
-//        CreatePoint(3, 4, 4, SeventhChordPoints);
-//        CreatePoint(3, 4, 3, SeventhChordPoints);
-//        CreatePoint(4, 4, 3, SeventhChordPoints);
-//        CreatePoint(4, 4, 2, SeventhChordPoints);
-//        CreatePoint(3, 4, 2, SeventhChordPoints);
-//        CreatePoint(3, 4, 1, SeventhChordPoints);
-//        CreatePoint(4, 4, 1, SeventhChordPoints);
+                    if (i + j + k < 12 && i + j + k > 7)
+                    {
+                        CreatePoint(i, j, k, SeventhChordPoints);
+                    }
+                }
+            }
+        }
+        //        CreatePoint(4, 3, 1, SeventhChordPoints);
+        //        CreatePoint(4, 2, 2, SeventhChordPoints);
+        //        CreatePoint(4, 1, 3, SeventhChordPoints);
+        //        CreatePoint(4, 1, 4, SeventhChordPoints);
+        //        CreatePoint(3, 1, 4, SeventhChordPoints);
+        //        CreatePoint(2, 2, 4, SeventhChordPoints);
+        //        CreatePoint(1, 3, 4, SeventhChordPoints);
+        //        CreatePoint(2, 3, 4, SeventhChordPoints);
+        //        CreatePoint(3, 2, 4, SeventhChordPoints);
+        //        CreatePoint(4, 2, 4, SeventhChordPoints);
+        //        CreatePoint(4, 2, 3, SeventhChordPoints);
+        //        CreatePoint(3, 2, 3, SeventhChordPoints);
+        //        CreatePoint(2, 3, 3, SeventhChordPoints);
+        //        CreatePoint(3, 3, 3, SeventhChordPoints);
+        //        CreatePoint(3, 3, 4, SeventhChordPoints);
+        //        CreatePoint(4, 3, 4, SeventhChordPoints);
+        //        CreatePoint(4, 3, 3, SeventhChordPoints);
+        //        CreatePoint(4, 3, 2, SeventhChordPoints);
+        //        CreatePoint(3, 3, 2, SeventhChordPoints);
+        //        CreatePoint(2, 4, 2, SeventhChordPoints);
+        //        CreatePoint(2, 4, 3, SeventhChordPoints);
+        //        CreatePoint(1, 4, 3, SeventhChordPoints);
+        //        CreatePoint(1, 4, 4, SeventhChordPoints);
+        //        CreatePoint(2, 4, 4, SeventhChordPoints);
+        //        CreatePoint(3, 4, 4, SeventhChordPoints);
+        //        CreatePoint(3, 4, 3, SeventhChordPoints);
+        //        CreatePoint(4, 4, 3, SeventhChordPoints);
+        //        CreatePoint(4, 4, 2, SeventhChordPoints);
+        //        CreatePoint(3, 4, 2, SeventhChordPoints);
+        //        CreatePoint(3, 4, 1, SeventhChordPoints);
+        //        CreatePoint(4, 4, 1, SeventhChordPoints);
     }
     void DrawTriadPoints()
     {
         SetColor(Color.black); // color of this set
-	// [x,y,z] for triad is 3<=x,y,z<=6 and x+y+z==12
+                               // [x,y,z] for triad is 3<=x,y,z<=6 and x+y+z==12
         for (int i = 3; i < 7; i++)
         {
             for (int j = 3; j < 7; j++)
             {
                 for (int k = 3; k < 7; k++)
                 {
-		    if (i+j+k == 12) { 
-        		CreatePoint(i, j, k, TriadPoints);
-		    }
-		}
-	    }
-	}
+                    if (i + j + k == 12)
+                    {
+                        CreatePoint(i, j, k, TriadPoints);
+                    }
+                }
+            }
+        }
     }
     void DrawTriadSet()
     {
@@ -444,7 +449,7 @@ public class ASM : MonoBehaviour
     }
     void ClearBuffer(List<GameObject> buffer)
     {
-        foreach(var go in buffer)
+        foreach (var go in buffer)
         {
             Destroy(go);
         }
@@ -466,14 +471,17 @@ public class ASM : MonoBehaviour
         {
             ToggleLabels(); // toggle the Labels on/off
         }
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.R)) // if R is pressed while LeftShift is held
+        if (Input.GetKeyDown(KeyCode.R)) // if R is pressed while LeftShift is held
         {
-            ResetCamera(); // reset the camera angle to default
+            ResetButton();
         }
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            StopAllCoroutines();
-            StartCoroutine(AnimateCamera());
+            StartAnimateCamera();
+        }
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            StartAnimate();
         }
 
         if (Input.GetMouseButton(0)) // left mouse button
@@ -496,7 +504,7 @@ public class ASM : MonoBehaviour
         mainCam.transform.position = new Vector3(camDistance, 0, 0);
         mainCam.transform.parent.Rotate(0, -cameraXangle, cameraYangle);
 
-        if (Input.GetMouseButtonDown(1)) // right mouse button
+        if (Input.GetMouseButtonUp(0)) // right mouse button
         {
             Ray r = mainCam.ScreenPointToRay(Input.mousePosition);
             RaycastHit rh;
@@ -505,22 +513,26 @@ public class ASM : MonoBehaviour
             {
                 if (rh.collider.gameObject.tag == "Point")
                 {
-                    Debug.Log("Clicked point!");
-                    if (oneSelected)
+                    if(selectedPoint != null)
                     {
-                        Debug.Log("created line");
-                        AddLine(selectedPoint.transform.position, rh.transform.position);
                         selectedPoint.GetComponent<Renderer>().material.color = Color.black;
-                        rh.transform.GetComponent<Renderer>().material.color = Color.black;
-                        oneSelected = false;
                     }
-                    else
-                    {
-                        Debug.Log("Selected");
-                        rh.transform.GetComponent<Renderer>().material.color = Color.red;
-                        oneSelected = true;
-                        selectedPoint = rh.transform.gameObject;
-                    }
+                    rh.transform.GetComponent<Renderer>().material.color = Color.red;
+                    oneSelected = true;
+                    selectedPoint = rh.transform.gameObject;
+                    //if (oneSelected)
+                    //{
+                    //    AddLine(selectedPoint.transform.position, rh.transform.position,defaultLineWidth,Color.black,CustomLines);
+                    //    selectedPoint.GetComponent<Renderer>().material.color = Color.black;
+                    //    rh.transform.GetComponent<Renderer>().material.color = Color.black;
+                    //    oneSelected = false;
+                    //}
+                    //else
+                    //{
+                    //    rh.transform.GetComponent<Renderer>().material.color = Color.red;
+                    //    oneSelected = true;
+                    //    selectedPoint = rh.transform.gameObject;
+                    //}
                 }
             }
         }
@@ -528,7 +540,7 @@ public class ASM : MonoBehaviour
     // creates a cylinder in the scene connecting p1 to p2
     public void AddLine(Vector3 p1, Vector3 p2, float linewidth = defaultLineWidth, Color lineColor = default(Color), List<GameObject> buffer = null)
     {
-	linewidth = gridLinesThickness;
+        linewidth = gridLinesThickness;
         var go = Instantiate(linePrefab);
         go.transform.position = p1;
         go.transform.localScale = new Vector3(go.transform.localScale.x * linewidth, go.transform.localScale.y * linewidth, Vector3.Distance(p1, p2));
@@ -543,7 +555,7 @@ public class ASM : MonoBehaviour
     // creates a cylinder in the scene connecting p1 to p2
     public void AddEdgeLine(Vector3 p1, Vector3 p2, float linewidth, Color lineColor, List<GameObject> buffer, bool flipXZ = false)
     {
-        if(flipXZ)
+        if (flipXZ)
         {
             var temp = p1.x;
             p1.x = p1.z;
@@ -592,33 +604,23 @@ public class ASM : MonoBehaviour
             LeftUIypos += 20;
             GUI.Label(new Rect(10, LeftUIypos, buttonWidths, 20), "Left mouse drag.....rotate view", menuLabelStyle);
             LeftUIypos += 20;
-            GUI.Label(new Rect(10, LeftUIypos, buttonWidths, 20), "Right mouse click.....connect points", menuLabelStyle);
+            GUI.Label(new Rect(10, LeftUIypos, buttonWidths, 20), "Left mouse click.....select/connect points", menuLabelStyle);
             LeftUIypos += 20;
             GUI.Label(new Rect(10, LeftUIypos, buttonWidths, 20), "Scrollwheel.....zoom in/out", menuLabelStyle);
             LeftUIypos += 20;
-            if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Reset (LeftShift + R)"))
+            if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Reset (R)"))
             {
-                ResetCamera();
+                ResetButton();
             }
             LeftUIypos += 20;
-            if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Animate Camera"))
+            if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Animate Cam (Space)"))
             {
-                //StopAllCoroutines();
-                if(CR_animateCamera != null)
-                {
-                    StopCoroutine(CR_animateCamera);
-                }
-                CR_animateCamera = StartCoroutine(AnimateCamera());
+                StartAnimateCamera();
             }
             LeftUIypos += 20;
-            if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Animate"))
+            if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Animate (Return)"))
             {
-                //StopAllCoroutines();
-                if (CR_animatePath != null)
-                {
-                    StopCoroutine(CR_animatePath);
-                }
-                CR_animatePath = StartCoroutine(AnimateLine());
+                StartAnimate();
             }
             LeftUIypos += 20;
             LeftUIypos += 20;
@@ -708,23 +710,31 @@ public class ASM : MonoBehaviour
                 ClearBuffer(GridLines);
                 ClearBuffer(GridPoints);
             }
+            LeftUIypos += 20;
+            string selectedPointText = "(none selected)";
+            if (selectedPoint != null)
+            {
+                selectedPointText = selectedPoint.transform.position.ToString();
+            }
+            GUI.Label(new Rect(10, LeftUIypos, buttonWidths, 20), "Selected Point: " + selectedPointText, selectedPointLabelStyle);
         }
-	char ch = 'X';
+        char ch = 'X';
         for (int i = 0; i < 3; i++) // x,y,z
         {
-             var pointCoords = new Vector3(0,0,0);
-	     pointCoords[i] = 6.2f;
-	     if (i == 1) {
-	     	pointCoords[i] = 6.4f;
-	     }
-             var screenPoint = mainCam.WorldToScreenPoint(pointCoords);
-             var width = 100f;
-             var height = 20f;
-             // show the label
-             GUI.Label(
-                 new Rect(screenPoint.x, Screen.height - screenPoint.y, width, height),
-                 "" + ch, axesStyle);
-	     ch++;
+            var pointCoords = new Vector3(0, 0, 0);
+            pointCoords[i] = 6.2f;
+            if (i == 1)
+            {
+                pointCoords[i] = 6.4f;
+            }
+            var screenPoint = mainCam.WorldToScreenPoint(pointCoords);
+            var width = 100f;
+            var height = 20f;
+            // show the label
+            GUI.Label(
+                new Rect(screenPoint.x, Screen.height - screenPoint.y, width, height),
+                "" + ch, axesStyle);
+            ch++;
         }
         if (toggleLabels)
         {
@@ -747,6 +757,18 @@ public class ASM : MonoBehaviour
         }
     }
 
+    void DeleteAllPointsAndLines()
+    {
+        foreach (var list in linelists)
+        {
+            ClearBuffer(list);
+        }
+        foreach (var list in pointlists)
+        {
+            ClearBuffer(list);
+        }
+    }
+
     private void ResetCamera()
     {
         StopAllCoroutines();
@@ -755,9 +777,31 @@ public class ASM : MonoBehaviour
         camDistance = defaultCamDistance;
     }
 
+    private void ResetButton()
+    {
+        ResetCamera(); // reset the camera angle to default
+        DeleteAllPointsAndLines();
+    }
+    void StartAnimate()
+    {
+        if (CR_animatePath != null)
+        {
+            StopCoroutine(CR_animatePath);
+        }
+        CR_animatePath = StartCoroutine(AnimateLine());
+    }
+    void StartAnimateCamera()
+    {
+        if (CR_animateCamera != null)
+        {
+            StopCoroutine(CR_animateCamera);
+        }
+        CR_animateCamera = StartCoroutine(AnimateCamera());
+    }
+
     IEnumerator AnimateCamera()
     {
-        Vector2 [] targets = { new Vector2(5,5), new Vector2(5, 85), new Vector2(85, 85), new Vector2(85, 5), new Vector2(35, 35) };
+        Vector2[] targets = { new Vector2(5, 5), new Vector2(5, 85), new Vector2(85, 85), new Vector2(85, 5), new Vector2(35, 35) };
         float speed1 = cameraAnimateSpeed, speed2 = cameraAnimateSpeed * cameraAnimateSlowdownRatio,
             dist1 = cameraAnimateSlowdownDistance, dist2 = cameraAnimateSnapDistance;
 
@@ -825,7 +869,7 @@ public class ASM : MonoBehaviour
             int greaterLength2 = GetMaxCount(i);
             for (int j = 0; j < greaterLength2; j++) // each point and line
             {
-                if(i < linelists.Length && j < linelists[i].Count)
+                if (i < linelists.Length && j < linelists[i].Count)
                 {
                     linelists[i][j].GetComponentInChildren<Renderer>().material.color = Color.yellow;
                 }
@@ -833,11 +877,11 @@ public class ASM : MonoBehaviour
                 {
                     pointlists[i][j].GetComponentInChildren<Renderer>().material.color = Color.yellow;
                 }
-                AudioSource.PlayClipAtPoint(notes[currentIndex],mainCam.transform.position);
+                AudioSource.PlayClipAtPoint(notes[currentIndex], mainCam.transform.position);
                 NextSound();
                 yield return new WaitForSeconds(0.5f);
             }
-            if(i < pointlists.Length && pointlists[i].Count > 1)
+            if (i < pointlists.Length && pointlists[i].Count > 1)
             {
                 pointlists[i][pointlists[i].Count - 1].GetComponentInChildren<Renderer>().material.color = Color.yellow;
                 AudioSource.PlayClipAtPoint(notes[currentIndex], mainCam.transform.position);
@@ -875,7 +919,7 @@ public class ASM : MonoBehaviour
     void NextSound()
     {
         currentIndex++;
-        if(currentIndex >= notes.Length)
+        if (currentIndex >= notes.Length)
         {
             currentIndex = 0;
         }
