@@ -364,6 +364,10 @@ MonoBehaviour:
   cameraYangle: 0
   camDistance: 0
   cameraRotateSpeed: 0.03
+  cameraAnimateSpeed: 30
+  cameraAnimateSlowdownRatio: 0.5
+  cameraAnimateSlowdownDistance: 10
+  cameraAnimateSnapDistance: 0.25
   cameraZoomSpeed: 0.5
 --- !u!1 &282840810
 GameObject:

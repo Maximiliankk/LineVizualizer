@@ -44,6 +44,7 @@ public class ASM : MonoBehaviour
     public float defaultCameraAngleX = 45;
     public float defaultCameraAngleY = 45;
     public float defaultCamDistance = 10;
+    public float cameraZoomSpeed = 0.5f;
     public float cameraXangle;
     public float cameraYangle;
     public float camDistance;
@@ -56,8 +57,11 @@ public class ASM : MonoBehaviour
     private bool toggleControls = true;
     private bool toggleLabels = true;
     public float cameraRotateSpeed = 0.001f;
+    public float cameraAnimateSpeed = 10f;
+    public float cameraAnimateSlowdownRatio = 0.5f; 
+    public float cameraAnimateSlowdownDistance = 10f;
+    public float cameraAnimateSnapDistance = 1f;
     private float gridLinesThickness = 0.15f;
-    public float cameraZoomSpeed = 0.5f;
     Color currentColor = Color.black;
     Coroutine CR_animatePath = null, CR_animateCamera = null;
 
@@ -68,13 +72,24 @@ public class ASM : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        ResetCamera();
+        InitializeCamera();
+        InitializeFonts();
+        InitializeAudio();
+    }
+    void InitializeFonts()
+    {
         pointLabelStyle.normal.textColor = Color.yellow;
         axesStyle.normal.textColor = Color.black;
-        axesStyle.fontSize = 20;
         menuLabelStyle.normal.textColor = Color.black;
+        axesStyle.fontSize = 20;
+    }
+    void InitializeCamera()
+    {
         mainCam = Camera.main;
-
+        ResetCamera();
+    }
+    void InitializeAudio()
+    {
         float[] samples = new float[pianoLib.samples * pianoLib.channels];
         pianoLib.GetData(samples, 0);
 
@@ -92,6 +107,7 @@ public class ASM : MonoBehaviour
             notes[i].SetData(tempSamples, 0);
         }
     }
+
     void DrawE1(bool flipXZ)
     {
         var P0 = new Vector3(3, 4, 1); var P1 = new Vector3(4, 4, 1);
@@ -734,10 +750,6 @@ public class ASM : MonoBehaviour
     private void ResetCamera()
     {
         StopAllCoroutines();
-        //if (CR_animateCamera != null)
-        //{
-        //    StopCoroutine(CR_animateCamera);
-        //}
         cameraXangle = defaultCameraAngleX;
         cameraYangle = defaultCameraAngleY;
         camDistance = defaultCamDistance;
@@ -746,7 +758,8 @@ public class ASM : MonoBehaviour
     IEnumerator AnimateCamera()
     {
         Vector2 [] targets = { new Vector2(5,5), new Vector2(5, 85), new Vector2(85, 85), new Vector2(85, 5), new Vector2(35, 35) };
-        float speed1 = 0.3f, speed2 = 0.1f, dist1 = 10, dist2 = 1;
+        float speed1 = cameraAnimateSpeed, speed2 = cameraAnimateSpeed * cameraAnimateSlowdownRatio,
+            dist1 = cameraAnimateSlowdownDistance, dist2 = cameraAnimateSnapDistance;
 
         for (int i = 0; i < targets.Length; i++)
         {
@@ -757,13 +770,13 @@ public class ASM : MonoBehaviour
                 move = target - new Vector2(cameraXangle, cameraYangle);
                 if (move.magnitude > dist1)
                 {
-                    cameraXangle += move.normalized.x * speed1;
-                    cameraYangle += move.normalized.y * speed1;
+                    cameraXangle += move.normalized.x * speed1 * Time.deltaTime;
+                    cameraYangle += move.normalized.y * speed1 * Time.deltaTime;
                 }
                 else if (move.magnitude > dist2)
                 {
-                    cameraXangle += move.normalized.x * speed2;
-                    cameraYangle += move.normalized.y * speed2;
+                    cameraXangle += move.normalized.x * speed2 * Time.deltaTime;
+                    cameraYangle += move.normalized.y * speed2 * Time.deltaTime;
                 }
                 else
                 {
@@ -778,9 +791,6 @@ public class ASM : MonoBehaviour
 
     IEnumerator AnimateLine()
     {
-        //List<GameObject>[] linelists = { HamiltonLines, SeventhChordLines, TriadLines, EdgeLines };
-        //List<GameObject>[] pointlists = { HamiltonPoints, SeventhChordPoints, TriadPoints };
-
         // set all lines to black
         for (int i = 0; i < linelists.Length; i++) // foreach list in linelists
         {
@@ -835,6 +845,7 @@ public class ASM : MonoBehaviour
             NextSound();
         }
     }
+
     int GetMaxCount(int i)
     {
         bool linesGood = false, pointsGood = false;
@@ -860,6 +871,7 @@ public class ASM : MonoBehaviour
         }
         return 0;
     }
+
     void NextSound()
     {
         currentIndex++;
