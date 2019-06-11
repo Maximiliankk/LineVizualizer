@@ -713,10 +713,7 @@ public class ASM : MonoBehaviour
             LeftUIypos += 20;
             if (GUI.Button(new Rect(10, LeftUIypos, buttonWidths, 20), "Play Selected"))
             {
-                var chordIndex = selectedPoint.transform.position;
-                AudioSource.PlayClipAtPoint(notes[30 + (int)chordIndex.x], mainCam.transform.position);
-                AudioSource.PlayClipAtPoint(notes[30 + (int)chordIndex.x + (int)chordIndex.y], mainCam.transform.position);
-                AudioSource.PlayClipAtPoint(notes[30 + (int)chordIndex.x + (int)chordIndex.y + (int)chordIndex.z], mainCam.transform.position);
+                PlayChord(selectedPoint.transform.position);
             }
             LeftUIypos += 20;
             string selectedPointText = "(none selected)";
@@ -785,8 +782,16 @@ public class ASM : MonoBehaviour
         camDistance = defaultCamDistance;
     }
 
+    void PlayChord(Vector3 pos)
+    {
+        AudioSource.PlayClipAtPoint(notes[30 + (int)pos.x], mainCam.transform.position);
+        AudioSource.PlayClipAtPoint(notes[30 + (int)pos.x + (int)pos.y], mainCam.transform.position);
+        AudioSource.PlayClipAtPoint(notes[30 + (int)pos.x + (int)pos.y + (int)pos.z], mainCam.transform.position);
+    }
+
     private void ResetButton()
     {
+        audioSource.Stop();
         ResetCamera(); // reset the camera angle to default
         DeleteAllPointsAndLines();
     }
@@ -884,17 +889,19 @@ public class ASM : MonoBehaviour
                 if (i < pointlists.Length && j < pointlists[i].Count)
                 {
                     pointlists[i][j].GetComponentInChildren<Renderer>().material.color = Color.yellow;
+                    PlayChord(pointlists[i][j].transform.position);
                 }
-                AudioSource.PlayClipAtPoint(notes[currentIndex], mainCam.transform.position);
-                NextSound();
+                //AudioSource.PlayClipAtPoint(notes[currentIndex], mainCam.transform.position);
+                //NextSound();
                 yield return new WaitForSeconds(0.5f);
             }
-            if (i < pointlists.Length && pointlists[i].Count > 1)
-            {
-                pointlists[i][pointlists[i].Count - 1].GetComponentInChildren<Renderer>().material.color = Color.yellow;
-                AudioSource.PlayClipAtPoint(notes[currentIndex], mainCam.transform.position);
-            }
-            NextSound();
+            //if (i < pointlists.Length && pointlists[i].Count > 1)
+            //{
+            //    pointlists[i][pointlists[i].Count - 1].GetComponentInChildren<Renderer>().material.color = Color.yellow;
+            //    //AudioSource.PlayClipAtPoint(notes[currentIndex], mainCam.transform.position);
+            //    PlayChord(pointlists[i][pointlists[i].Count - 1].transform.position);
+            //}
+            //NextSound();
         }
     }
 
