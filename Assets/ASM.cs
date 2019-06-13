@@ -581,9 +581,9 @@ public class ASM : MonoBehaviour
         {
             ToggleControls();
         }
+        int buttonWidths = 150;
         if (toggleControls)
         {
-            int buttonWidths = 150;
             LeftUIypos += 40;
             if (GUI.Button(new Rect(10, LeftUIypos, 130, 20), "Toggle Labels (L)"))
             {
@@ -703,15 +703,16 @@ public class ASM : MonoBehaviour
             {
                 PlayChord(selectedPoint.transform.position);
             }
-            LeftUIypos += 20;
-            string selectedPointText = "(none selected)";
-            if (selectedPoint != null)
-            {
-                selectedPointText = "[ " + selectedPoint.transform.position.x + ", " +
-                selectedPoint.transform.position.y + ", " + selectedPoint.transform.position.z + " ]";
-            }
-            GUI.Label(new Rect(10, LeftUIypos, buttonWidths, 20), "Selected Chord Type: " + selectedPointText, selectedPointLabelStyle);
         }
+
+        LeftUIypos += 20;
+        string selectedPointText = "(none selected)";
+        if (selectedPoint != null)
+        {
+            selectedPointText = "[ " + selectedPoint.transform.position.x + ", " +
+            selectedPoint.transform.position.y + ", " + selectedPoint.transform.position.z + " ]";
+        }
+        GUI.Label(new Rect(10, LeftUIypos, buttonWidths, 20), "Selected Chord Type: " + selectedPointText, selectedPointLabelStyle);
         char ch = 'X';
         for (int i = 0; i < 3; i++) // x,y,z
         {
