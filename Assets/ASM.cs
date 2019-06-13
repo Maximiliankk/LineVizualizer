@@ -14,6 +14,10 @@ using UnityEngine;
 /// </summary>
 public class ASM : MonoBehaviour
 {
+    private int a_note = 30;
+    private int x_previous = 0;
+    private int x_current = 0;
+    private int num_selects = 0;
     public AudioSource audioSource;
     public AudioClip pianoLib;
     private AudioClip[] notes;
@@ -513,8 +517,10 @@ public class ASM : MonoBehaviour
             {
                 if (rh.collider.gameObject.tag == "Point")
                 {
+		    x_previous = x_current;
                     if(selectedPoint != null)
                     {
+		        x_current = (int)selectedPoint.transform.position.x + 1;
                         selectedPoint.GetComponent<Renderer>().material.color = Color.black;
                     }
                     rh.transform.GetComponent<Renderer>().material.color = Color.red;
@@ -709,8 +715,8 @@ public class ASM : MonoBehaviour
         string selectedPointText = "(none selected)";
         if (selectedPoint != null)
         {
-            selectedPointText = "[ " + selectedPoint.transform.position.x + ", " +
-            selectedPoint.transform.position.y + ", " + selectedPoint.transform.position.z + " ]";
+            selectedPointText = "[ " + (selectedPoint.transform.position.x+1) + ", " +
+            (selectedPoint.transform.position.y+1) + ", " + (selectedPoint.transform.position.z+1) + " ]";
         }
         GUI.Label(new Rect(10, LeftUIypos, buttonWidths, 20), "Selected Chord Type: " + selectedPointText, selectedPointLabelStyle);
         char ch = 'X';
@@ -774,9 +780,9 @@ public class ASM : MonoBehaviour
 
     void PlayChord(Vector3 pos)
     {
-        AudioSource.PlayClipAtPoint(notes[30 + (int)pos.x], mainCam.transform.position);
-        AudioSource.PlayClipAtPoint(notes[30 + (int)pos.x + (int)pos.y], mainCam.transform.position);
-        AudioSource.PlayClipAtPoint(notes[30 + (int)pos.x + (int)pos.y + (int)pos.z], mainCam.transform.position);
+        AudioSource.PlayClipAtPoint(notes[a_note + (int)pos.x+1], mainCam.transform.position);
+        AudioSource.PlayClipAtPoint(notes[a_note + (int)pos.x+1 + (int)pos.y+1], mainCam.transform.position);
+        AudioSource.PlayClipAtPoint(notes[a_note + (int)pos.x+1 + (int)pos.y+1 + (int)pos.z+1], mainCam.transform.position);
     }
 
     private void ResetButton()
