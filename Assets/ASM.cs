@@ -520,7 +520,7 @@ public class ASM : MonoBehaviour
 		    x_previous = x_current;
                     if(selectedPoint != null)
                     {
-		        x_current = (int)selectedPoint.transform.position.x + 1;
+		        x_current = (int)selectedPoint.transform.position.x;
                         selectedPoint.GetComponent<Renderer>().material.color = Color.black;
                     }
                     rh.transform.GetComponent<Renderer>().material.color = Color.red;
@@ -563,7 +563,7 @@ public class ASM : MonoBehaviour
         go.transform.localScale = new Vector3(go.transform.localScale.x * linewidth, go.transform.localScale.y * linewidth, Vector3.Distance(p1, p2));
         go.transform.GetComponentInChildren<Renderer>().material.color = lineColor;
         go.transform.LookAt(p2);
-        go.transform.position -= new Vector3(1, 1, 1);
+        //go.transform.position -= new Vector3(1, 1, 1);
         if (buffer != null)
         {
             buffer.Add(go);
@@ -715,8 +715,8 @@ public class ASM : MonoBehaviour
         string selectedPointText = "(none selected)";
         if (selectedPoint != null)
         {
-            selectedPointText = "[ " + (selectedPoint.transform.position.x+1) + ", " +
-            (selectedPoint.transform.position.y+1) + ", " + (selectedPoint.transform.position.z+1) + " ]";
+            selectedPointText = "[ " + (selectedPoint.transform.position.x) + ", " +
+            (selectedPoint.transform.position.y) + ", " + (selectedPoint.transform.position.z) + " ]";
         }
         GUI.Label(new Rect(10, LeftUIypos, buttonWidths, 20), "Selected Chord Type: " + selectedPointText, selectedPointLabelStyle);
         char ch = 'X';
@@ -751,7 +751,7 @@ public class ASM : MonoBehaviour
                     GUI.Label(
                         new Rect(screenPoint.x - width / 2,
                         Screen.height - screenPoint.y, width, height),
-                        "[" + (pointCoords.x + 1) + ", " + (pointCoords.y + 1) + ", " + (pointCoords.z + 1) + "]",
+                        "[" + (pointCoords.x) + ", " + (pointCoords.y) + ", " + (pointCoords.z) + "]",
                         pointLabelStyle);
                 }
             }
@@ -780,9 +780,9 @@ public class ASM : MonoBehaviour
 
     void PlayChord(Vector3 pos)
     {
-        AudioSource.PlayClipAtPoint(notes[a_note + (int)pos.x+1], mainCam.transform.position);
-        AudioSource.PlayClipAtPoint(notes[a_note + (int)pos.x+1 + (int)pos.y+1], mainCam.transform.position);
-        AudioSource.PlayClipAtPoint(notes[a_note + (int)pos.x+1 + (int)pos.y+1 + (int)pos.z+1], mainCam.transform.position);
+        AudioSource.PlayClipAtPoint(notes[a_note + (int)pos.x], mainCam.transform.position);
+        AudioSource.PlayClipAtPoint(notes[a_note + (int)pos.x + (int)pos.y], mainCam.transform.position);
+        AudioSource.PlayClipAtPoint(notes[a_note + (int)pos.x + (int)pos.y + (int)pos.z], mainCam.transform.position);
     }
 
     private void ResetButton()
