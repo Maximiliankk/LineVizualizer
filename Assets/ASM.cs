@@ -520,19 +520,6 @@ public class ASM : MonoBehaviour
                     rh.transform.GetComponent<Renderer>().material.color = Color.red;
                     oneSelected = true;
                     selectedPoint = rh.transform.gameObject;
-                    //if (oneSelected)
-                    //{
-                    //    AddLine(selectedPoint.transform.position, rh.transform.position,defaultLineWidth,Color.black,CustomLines);
-                    //    selectedPoint.GetComponent<Renderer>().material.color = Color.black;
-                    //    rh.transform.GetComponent<Renderer>().material.color = Color.black;
-                    //    oneSelected = false;
-                    //}
-                    //else
-                    //{
-                    //    rh.transform.GetComponent<Renderer>().material.color = Color.red;
-                    //    oneSelected = true;
-                    //    selectedPoint = rh.transform.gameObject;
-                    //}
                 }
             }
         }
@@ -719,7 +706,8 @@ public class ASM : MonoBehaviour
             string selectedPointText = "(none selected)";
             if (selectedPoint != null)
             {
-                selectedPointText = selectedPoint.transform.position.ToString();
+                selectedPointText = "[ " + selectedPoint.transform.position.x + ", " +
+                selectedPoint.transform.position.y + ", " + selectedPoint.transform.position.z + " ]";
             }
             GUI.Label(new Rect(10, LeftUIypos, buttonWidths, 20), "Selected Point: " + selectedPointText, selectedPointLabelStyle);
         }
@@ -891,17 +879,8 @@ public class ASM : MonoBehaviour
                     pointlists[i][j].GetComponentInChildren<Renderer>().material.color = Color.yellow;
                     PlayChord(pointlists[i][j].transform.position);
                 }
-                //AudioSource.PlayClipAtPoint(notes[currentIndex], mainCam.transform.position);
-                //NextSound();
                 yield return new WaitForSeconds(0.5f);
             }
-            //if (i < pointlists.Length && pointlists[i].Count > 1)
-            //{
-            //    pointlists[i][pointlists[i].Count - 1].GetComponentInChildren<Renderer>().material.color = Color.yellow;
-            //    //AudioSource.PlayClipAtPoint(notes[currentIndex], mainCam.transform.position);
-            //    PlayChord(pointlists[i][pointlists[i].Count - 1].transform.position);
-            //}
-            //NextSound();
         }
     }
 
