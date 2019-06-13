@@ -424,7 +424,7 @@ public class ASM : MonoBehaviour
     void CreatePathPoint(float x, float y, float z, bool makeLine, List<GameObject> pointbuffer, List<GameObject> linebuffer)
     {
         GameObject go = Instantiate(pointPrefab);
-        go.transform.position = new Vector3(x - 1, y - 1, z - 1);
+        go.transform.position = new Vector3(x, y, z);
         go.transform.GetComponent<Renderer>().material.color = Color.black;
         go.GetComponent<Renderer>().material.color = currentColor;
 
@@ -438,7 +438,7 @@ public class ASM : MonoBehaviour
     void CreatePoint(float x, float y, float z, List<GameObject> pointbuffer)
     {
         GameObject go = Instantiate(pointPrefab);
-        go.transform.position = new Vector3(x - 1, y - 1, z - 1);
+        go.transform.position = new Vector3(x, y, z);
         go.transform.GetComponent<Renderer>().material.color = Color.black;
         go.GetComponent<Renderer>().material.color = currentColor;
         pointbuffer.Add(go);
