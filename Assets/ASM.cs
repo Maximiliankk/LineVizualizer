@@ -504,7 +504,7 @@ public class ASM : MonoBehaviour
         mainCam.transform.position = new Vector3(camDistance, 0, 0);
         mainCam.transform.parent.Rotate(0, -cameraXangle, cameraYangle);
 
-        if (Input.GetMouseButtonUp(0)) // right mouse button
+        if (Input.GetMouseButtonUp(0)) // left mouse button
         {
             Ray r = mainCam.ScreenPointToRay(Input.mousePosition);
             RaycastHit rh;
@@ -520,6 +520,7 @@ public class ASM : MonoBehaviour
                     rh.transform.GetComponent<Renderer>().material.color = Color.red;
                     oneSelected = true;
                     selectedPoint = rh.transform.gameObject;
+                    PlayChord(selectedPoint.transform.position);
                 }
             }
         }
@@ -709,7 +710,7 @@ public class ASM : MonoBehaviour
                 selectedPointText = "[ " + selectedPoint.transform.position.x + ", " +
                 selectedPoint.transform.position.y + ", " + selectedPoint.transform.position.z + " ]";
             }
-            GUI.Label(new Rect(10, LeftUIypos, buttonWidths, 20), "Selected Point: " + selectedPointText, selectedPointLabelStyle);
+            GUI.Label(new Rect(10, LeftUIypos, buttonWidths, 20), "Selected Chord Type: " + selectedPointText, selectedPointLabelStyle);
         }
         char ch = 'X';
         for (int i = 0; i < 3; i++) // x,y,z
